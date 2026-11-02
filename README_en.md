@@ -17,6 +17,8 @@ Main changes from f1w3/LunaChat v3.0.20:
 - Fixed a bug where the server froze for a few seconds when `/tell` etc. was used with a name that does not exist or has never joined the server
 - Looking up players by name (`/ch kick`, `/ch ban`, `/ch mute`, `/ch hide`, etc.) no longer queries Mojang's servers. Only online players and players in the server's cache (`usercache.json`) are found
 - Replaced APIs deprecated by Paper (fixed build warnings)
+- The `config.yml` in the jar is now the Japanese version, and the English version is extracted as `config_en.yml` (the server always reads `config.yml`, regardless of the language. An existing `config.yml` is kept as is)
+- The default of `playerChatEventListenerPriority` in `config.yml` is now `HIGHEST` (also when the line is missing)
 
 ## Features
 
@@ -40,6 +42,7 @@ Main changes from f1w3/LunaChat v3.0.20:
 
 # Installation method
 Please place the .jar file in the Paper plugins folder and restart the server.
+When updating, delete the old jar (such as `LunaChat-3.0.20.jar`) first. If the old jar remains, you can't tell which one will be loaded.
 
 # Usage
 `/ch` shows the list of commands (help).
@@ -57,6 +60,7 @@ Please place the .jar file in the Paper plugins folder and restart the server.
 The following are saved in `plugins/LunaChat/`.
 
 - `config.yml` — settings
+- `config_en.yml` — English descriptions of the settings (not loaded; write your settings in `config.yml`)
 - `messages/` — message texts
 - `channels/` — settings and members of each channel
 - `defaults.yml`, `templates.yml`, `japanize.yml`, `dictionary.yml`, `hidelist.yml` — default channels, format templates, Japanize on / off, conversion dictionary, hidden players

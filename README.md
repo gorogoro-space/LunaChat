@@ -17,6 +17,8 @@ f1w3/LunaChat v3.0.20 からの主な変更点は次のとおりです。
 - `/tell` などで、存在しない名前やサーバーに来たことのない名前を指定すると、サーバーが数秒止まる不具合を修正
 - プレイヤーを名前で探すとき(`/ch kick` `/ch ban` `/ch mute` `/ch hide` など)、Mojang のサーバーに問い合わせないように変更。オンラインの人と、サーバーのキャッシュ(`usercache.json`)にいる人だけが見つかります
 - Paper で非推奨になっている API の置き換え(ビルド時の警告の修正)
+- jar に入っている `config.yml` を日本語版にし、英語版を `config_en.yml` として展開するように変更(サーバーでは言語に関係なく `config.yml` を読みます。すでにある `config.yml` はそのまま使われます)
+- `config.yml` の `playerChatEventListenerPriority` の既定値を `HIGHEST` に変更(設定に行が無いときも `HIGHEST` です)
 
 ## 主な機能
 
@@ -42,6 +44,7 @@ f1w3/LunaChat v3.0.20 からの主な変更点は次のとおりです。
 Please place the .jar file in the Paper plugins folder.
 
 .jar ファイルを Paper の plugins フォルダに置き、サーバーを再起動してください。
+更新するときは、古い jar(`LunaChat-3.0.20.jar` など)を先に消してください。古い jar が残っていると、どちらが読み込まれるかわかりません。
 
 # Usage
 `/ch` でコマンドの一覧(ヘルプ)が表示されます。
@@ -59,6 +62,7 @@ Please place the .jar file in the Paper plugins folder.
 `plugins/LunaChat/` に次のものを保存します。
 
 - `config.yml` — 設定
+- `config_en.yml` — 設定の英語の説明(読み込まれません。設定は `config.yml` に書きます)
 - `messages/` — メッセージの文面
 - `channels/` — チャンネルごとの設定とメンバー
 - `defaults.yml`・`templates.yml`・`japanize.yml`・`dictionary.yml`・`hidelist.yml` — 発言先のチャンネル、書式のテンプレート、ローマ字変換の ON / OFF、変換の辞書、非表示にした相手
