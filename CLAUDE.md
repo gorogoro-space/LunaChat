@@ -58,6 +58,7 @@
 ### チャットの受け取り
 - 通常のチャットは `AsyncPlayerChatEvent`(Paper では非推奨)で受け取る。Paper の `AsyncChatEvent` には移さない
   - 理由: Paper は 1 回の発言で、先に古い `AsyncPlayerChatEvent` を MONITOR まで処理してから `AsyncChatEvent` を出す。LunaChat が `AsyncChatEvent` で発言を止めても、古いイベントを使う dynmap(MONITOR で Web に送る)・mcMMO・CoreProtect などには止まっていない発言が届き、チャンネルの発言が dynmap の Web マップに出てしまう
+  - 実機でも確認済み(2026-11-03): チャットの受け取りだけを `AsyncChatEvent` に変えた版で、`/ch create test` → `/ch join test` のあとに発言すると、その発言が dynmap の Web マップに表示された。`AsyncChatEvent` に移すなら、dynmap などへの転送を止める方法と一緒に設計し、同じ手順で確かめる
 - 優先度は `config.yml` の `playerChatEventListenerPriority` で選ぶ(既定は HIGHEST。行が無いとき・読めないときも HIGHEST)。リスナーは優先度ごとにメソッドを用意し、設定と一致するものだけが処理する
 
 ### 外部と通信しない
