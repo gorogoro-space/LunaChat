@@ -1,72 +1,127 @@
-# LunaChat Remastered - チャンネルチャットプラグイン
+# LunaChat
+[![Paper 1.21.11](https://img.shields.io/badge/Paper-1.21.11-brightgreen.svg)](https://fill-ui.papermc.io/projects/paper/version/1.21.11)
+[![GitHub release](https://img.shields.io/github/release/gorogoro-space/LunaChat.svg)](https://github.com/gorogoro-space/LunaChat/releases)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/gorogoro-space/LunaChat/issues)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://github.com/gorogoro-space/LunaChat/blob/main/LICENSE)
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/f1w3/lunachat/build.yml?style=for-the-badge)](https://github.com/f1w3/LunaChat/releases/tag/dev-build)
-[![Latest Release](https://img.shields.io/github/v/release/f1w3/lunachat?style=for-the-badge)](https://github.com/f1w3/lunachat/releases/latest)
-[![License](https://img.shields.io/badge/License-LGPLv3-green?style=for-the-badge)](https://www.gnu.org/licenses/lgpl-3.0.ja.html)
+README - 日本語 / [English](README_en.md)
 
-README - [日本語](https://github.com/f1w3/LunaChat/blob/master/README.md) / [English](https://github.com/f1w3/LunaChat/blob/master/README_en.md)  
+チャンネルチャットと、ローマ字入力の漢字変換(Japanize)を提供する Paper 用プラグインです。
 
-## 初めに
+**このリポジトリはフォークです。** 元のソースコードは [ucchy](https://github.com/ucchyocean) さんの [ucchyocean/LunaChat](https://github.com/ucchyocean/LunaChat) で、それを引き継いだ [f1w3/LunaChat](https://github.com/f1w3/LunaChat)(LunaChat Remastered)から、さらにフォークしています。
+f1w3/LunaChat v3.0.20 からの主な変更点は次のとおりです。
 
-このプロジェクトは[ucchyocean/LunaChat](https://github.com/ucchyocean/LunaChat)のフォークです。
+- Paper 1.21.11 / Java 21 専用にし、ビルドを Maven から Gradle に変更(1.21.11 未満のサーバーでは読み込まれません。Paper の API を使うので、Spigot では動きません)
+- BungeeCord への対応を削除(Paper のサーバーに入れて使うプラグインになりました)
+- bStats による統計情報の送信を削除(`config.yml` の `metricsDisabled` は使われなくなりました)
+- `/tell` などで、存在しない名前やサーバーに来たことのない名前を指定すると、サーバーが数秒止まる不具合を修正
+- プレイヤーを名前で探すとき(`/ch kick` `/ch ban` `/ch mute` `/ch hide` など)、Mojang のサーバーに問い合わせないように変更。オンラインの人と、サーバーのキャッシュ(`usercache.json`)にいる人だけが見つかります
+- Paper で非推奨になっている API の置き換え(ビルド時の警告の修正)
 
-**`1.18`以前のバージョン**等についてはそちらをお使いください。
+## 主な機能
 
-[Github](https://github.com/ucchyocean/LunaChat) / [Spigotmc](https://www.spigotmc.org/resources/lunachat.82293/)
+- チャンネルチャット。チャンネルごとに、色・書式・パスワード・リストからの非表示・発言範囲などを設定できます
+- チャンネルのモデレーター。モデレーターは、チャンネルの設定の変更や、キック・BAN ができます(作ったばかりのチャンネルでは、最初に入った人がモデレーターになります)
+- チャットのローマ字入力を、かなや漢字に変換します(Japanize)
+- チャンネルチャットの発言はクリックできます
+- `/tell` を LunaChat のものに置き換えます。`/tell` のメッセージも漢字に変換され、`/r` で返信できます
+- ほかのプラグインから使える API とイベント
 
-## 概要
+### 連携できるプラグイン(どれも任意)
 
-- LunaChatは、`Spigot(Paper) 1.18～最新版` / `BungeeCord`へ導入できます。
-- チャットのローマ字入力を、漢字変換することができます。
-- チャンネルチャット機能を統合しています。チャンネルには、多種のオプションを設定可能です。
-- チャンネルの入室にパスワードを設定したり、チャンネルをリストから非表示にすることができます。
-- チャンネルのモデレーターを設定することができます。モデレーターは、チャンネルのオプションを変更したり、チャンネルからのキックやBANができます。作成直後のチャンネルの場合、最初に入室した人がモデレーターになります。
-- チャンネルチャットの発言内容は、クリック可能です。
-- `/ch`コマンドを使うとヘルプを表示することが出来ます。
-- `/tell`コマンドをLunaChatで置き換えます。`/tell`コマンドの内容も、漢字変換されるようになります。
-- `/r`コマンドを使って、`/tell`コマンドのメッセージに返信することもできます。
-- 多数のAPIやイベント発行機能をサポートしています。
-
-### LunaChat-spigotから連携可能なプラグイン
-
-- Vault (for Prefix/Suffix plugins)
-- Dynmap
-- Multiverse
+- Vault(接頭辞・接尾辞を設定するプラグインと連携)
+- dynmap
+- Multiverse-Core
 - mcMMO
 
-### LunaChat-spigotへ連携可能なプラグイン
+# Requirements
+- Paper 1.21.11
+- Java 21
 
-- DiscordSRV
+# Installation method
+Please place the .jar file in the Paper plugins folder.
 
-### LunaChat-bungeecordから連携可能なプラグイン
+.jar ファイルを Paper の plugins フォルダに置き、サーバーを再起動してください。
 
-- BungeePerms
-- LuckPerms
+# Usage
+`/ch` でコマンドの一覧(ヘルプ)が表示されます。
 
-## 使い方
+```
+/ch join <チャンネル名>   チャンネルに参加します(config.yml の設定によっては、無ければ作ります)
+/ch leave              参加しているチャンネルから退出します
+/ch list               チャンネルの一覧を表示します
+/tell <名前> <メッセージ>  オンラインの人にメッセージを送ります(/msg /m /t も同じ)
+/r <メッセージ>           直前の個人チャットの相手に返信します
+/jp on|off             自分のチャットのローマ字変換を ON / OFF にします
+```
 
-[LunaChat.jar](https://github.com/f1w3/lunachat/releases/latest)をpluginsフォルダに入れて、サーバーを起動してください。
+# Data
+`plugins/LunaChat/` に次のものを保存します。
 
-## BStats
+- `config.yml` — 設定
+- `messages/` — メッセージの文面
+- `channels/` — チャンネルごとの設定とメンバー
+- `defaults.yml`・`templates.yml`・`japanize.yml`・`dictionary.yml`・`hidelist.yml` — 発言先のチャンネル、書式のテンプレート、ローマ字変換の ON / OFF、変換の辞書、非表示にした相手
+- `uuidcache.yml` — プレイヤーの UUID と名前の記録
+- `logs/` — チャットのログ(config.yml で記録する設定のとき)
 
-<https://bstats.org/plugin/bukkit/LunaChat/7936>
+# Disclaimer
+Do not assume any responsibility by use. Please use it at your own risk.
 
-統計情報を送信したくない場合、
-`config.yml`にある`metricsDisabled`を`true`にしてください。
+## ビルド
 
-## ダウンロード
+JDK 21 が必要です。Gradle はラッパー(`gradlew`)が自動でダウンロードするので、別途インストールする必要はありません。
 
-\- 安定版: [最新版をダウンロード](https://github.com/f1w3/lunachat/releases/latest)  
-\- 開発版: [dev-build](https://github.com/f1w3/LunaChat/releases/tag/dev-build)
+```
+gradlew.bat clean build
+```
 
-## サポート
+(macOS / Linux では `./gradlew clean build`)
 
-[Github issues](https://github.com/f1w3/LunaChat/issues)の方でサポートをしています。
+## IntelliJ IDEA でのビルド手順
 
-お気軽にお問い合わせください。
+本プロジェクトはビルドツールに Gradle を使用しています。
+IntelliJ IDEA 上で正しくプラグイン（JARファイル）を生成するには、以下の手順を実行してください。
+「ビルド → アーティファクトのビルド」はクラスファイルが入らないことがあるので使わないでください。
+
+### 🛠️ ビルド手順
+
+1. IntelliJ IDEA の画面右端にある **「Gradle」タブ** をクリックして開きます。
+2. プロジェクト名（LunaChat）を展開し、 **`Tasks`** ツリーを開きます。
+3. リスト内にある **`clean`** をダブルクリックして実行します（古いビルドキャッシュを削除します）。
+4. 続けてリスト内にある **`build`** をダブルクリックして実行します。
+
+### 📦 生成されたファイルの場所
+ビルドが成功すると、プロジェクトのルート直下に `build/libs` フォルダが作成（または更新）され、その中に中身の詰まった正しい JAR ファイルが生成されます。
+
+* **生成先:** `build/libs/LunaChat-<version>.jar`(例: `LunaChat-4.0.0.jar`。バージョンは `gradle.properties` の `version`)
+
+この JAR ファイルを Minecraft サーバーの `plugins` フォルダに配置してください。
+
+## 開発(IntelliJ IDEA で Claude Code を使う)
+
+このリポジトリには、AI コーディングツール [Claude Code](https://docs.claude.com/ja/docs/claude-code/overview) 向けの作業ルールを書いた `CLAUDE.md` があります。IntelliJ IDEA で使う手順は次のとおりです。
+
+1. Claude の有料プラン(Pro / Max)か、Anthropic API のアカウントを用意します。
+2. Windows では、先に [Git for Windows](https://git-scm.com/downloads/win) をインストールします。
+3. Claude Code 本体をインストールします。Windows では PowerShell で次を実行します。
+   ```
+   irm https://claude.ai/install.ps1 | iex
+   ```
+4. IntelliJ IDEA の「設定 → プラグイン → Marketplace」で「Claude Code」を検索してインストールし、IDE を再起動します。検索結果には Anthropic 以外が作った似た名前のプラグインも表示されます。プラグイン名の下に書かれた提供元が「Anthropic」になっているものを選んでください。
+5. プロジェクトを開いて、ターミナルで `claude` を実行します(`Ctrl+Esc` でも起動できます)。初回はブラウザでログインします。
+
+起動すると `CLAUDE.md` が自動で読み込まれ、このプロジェクトの設計方針に沿って作業します。
 
 ## ライセンス
 
-本プラグインのライセンスは、**LGPLv3**に従います。
+本プラグインのライセンスは、フォーク元と同じく **GNU Lesser General Public License v3.0(LGPL v3)** です。条文は [LICENSE](LICENSE) を参照してください。LGPL v3 は GPL v3 に追加の許可を加えたものなので、GPL v3 の条文も [COPYING](COPYING) に置いています。
+元の著作権は ucchy さんと、フォーク元の貢献者の皆さんにあります。
 
-ライセンス条文は[こちら](https://www.gnu.org/licenses/lgpl-3.0.ja.html)を参照してください。
+## kubotan へのメモ
+
+リポジトリを新規作成したら、**必ず Watch を設定すること**(忘れない!)。
+GitHub の自動 Watch 機能は 2025 年 5 月に廃止されたため、設定しないと他の人が立てた issue や PR の通知が届かない。
+
+1. リポジトリのページ右上の **「Watch」** を押す
+2. **「Custom」** を選び、**Issues** と **Pull requests** にチェックを入れる

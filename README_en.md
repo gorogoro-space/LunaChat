@@ -1,72 +1,85 @@
-# LunaChat Remastered - Channel Chat Plugin
+# LunaChat
+[![Paper 1.21.11](https://img.shields.io/badge/Paper-1.21.11-brightgreen.svg)](https://fill-ui.papermc.io/projects/paper/version/1.21.11)
+[![GitHub release](https://img.shields.io/github/release/gorogoro-space/LunaChat.svg)](https://github.com/gorogoro-space/LunaChat/releases)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/gorogoro-space/LunaChat/issues)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://github.com/gorogoro-space/LunaChat/blob/main/LICENSE)
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/f1w3/lunachat/build.yml?style=for-the-badge)](https://github.com/f1w3/LunaChat/releases/tag/dev-build)
-[![Latest Release](https://img.shields.io/github/v/release/f1w3/lunachat?style=for-the-badge)](https://github.com/f1w3/lunachat/releases/latest)
-[![License](https://img.shields.io/badge/License-LGPLv3-green?style=for-the-badge)](https://www.gnu.org/licenses/lgpl-3.0.en.html)  
+README - [日本語](README.md) / English
 
-README - [日本語](https://github.com/f1w3/LunaChat/blob/master/README.md) / [English](https://github.com/f1w3/LunaChat/blob/master/README_en.md)  
+A Paper plugin that provides channel chat and romaji-to-Japanese (kana/kanji) conversion (Japanize).
 
-## Introduction
+**This repository is a fork.** The original source code is [ucchyocean/LunaChat](https://github.com/ucchyocean/LunaChat) by [ucchy](https://github.com/ucchyocean). This fork is based on [f1w3/LunaChat](https://github.com/f1w3/LunaChat) (LunaChat Remastered), which continued that project.
+Main changes from f1w3/LunaChat v3.0.20:
 
-This project is a fork of [ucchyocean/LunaChat](https://github.com/ucchyocean/LunaChat).  
+- Paper 1.21.11 / Java 21 only. The build tool was changed from Maven to Gradle (the plugin is not loaded on servers older than 1.21.11. It uses the Paper API, so it does not work on Spigot)
+- Removed BungeeCord support (this is now a plugin for Paper servers)
+- Removed bStats statistics reporting (`metricsDisabled` in `config.yml` is no longer used)
+- Fixed a bug where the server froze for a few seconds when `/tell` etc. was used with a name that does not exist or has never joined the server
+- Looking up players by name (`/ch kick`, `/ch ban`, `/ch mute`, `/ch hide`, etc.) no longer queries Mojang's servers. Only online players and players in the server's cache (`usercache.json`) are found
+- Replaced APIs deprecated by Paper (fixed build warnings)
 
-For **versions prior to `1.18`**, please use the original project:  
+## Features
 
-[Github](https://github.com/ucchyocean/LunaChat) / [Spigotmc](https://www.spigotmc.org/resources/lunachat.82293/)  
+- Channel chat. Each channel can have its own color, format, password, visibility in the list, chat range, and more
+- Channel moderators. Moderators can change channel settings and kick or ban players (for a newly created channel, the first player who joins becomes the moderator)
+- Converts romaji typed in chat into kana and kanji (Japanize)
+- Messages in channel chat are clickable
+- Replaces `/tell` with LunaChat's version. `/tell` messages are also converted, and you can reply with `/r`
+- API and events for other plugins
 
-## Overview
+### Supported plugins (all optional)
 
-- LunaChat can be installed on `Spigot(Paper) 1.18+` / `BungeeCord`.  
-- It converts romanized Japanese input into kanji.  
-- It integrates channel chat functionality, with many customizable options.  
-- You can set passwords for channel entry or hide channels from the list.  
-- Channel moderators can be assigned. Moderators can change channel options, kick, or ban users. For newly created channels, the first person to join becomes the moderator.  
-- Messages in channel chat are clickable.  
-- The `/ch` command displays help.  
-- The `/tell` command is replaced by LunaChat, and its messages are also converted to kanji.  
-- The `/r` command allows you to reply to `/tell` messages.  
-- Numerous APIs and event hooks are supported.  
+- Vault (for prefix/suffix plugins)
+- dynmap
+- Multiverse-Core
+- mcMMO
 
-### Plugins integratable with LunaChat (Spigot)
+# Requirements
+- Paper 1.21.11
+- Java 21
 
-- Vault (for Prefix/Suffix plugins)  
-- Dynmap  
-- Multiverse  
-- mcMMO  
+# Installation method
+Please place the .jar file in the Paper plugins folder and restart the server.
 
-### Plugins integratable into LunaChat (Spigot)
+# Usage
+`/ch` shows the list of commands (help).
 
-- DiscordSRV  
+```
+/ch join <channel>      Join a channel (depending on config.yml, it is created if it does not exist)
+/ch leave               Leave the channel you are in
+/ch list                Show the list of channels
+/tell <name> <message>  Send a message to an online player (/msg /m /t also work)
+/r <message>            Reply to the last private chat partner
+/jp on|off              Turn Japanize conversion of your chat on / off
+```
 
-### Plugins integratable with LunaChat (BungeeCord)
+# Data
+The following are saved in `plugins/LunaChat/`.
 
-- BungeePerms  
-- LuckPerms  
+- `config.yml` — settings
+- `messages/` — message texts
+- `channels/` — settings and members of each channel
+- `defaults.yml`, `templates.yml`, `japanize.yml`, `dictionary.yml`, `hidelist.yml` — default channels, format templates, Japanize on / off, conversion dictionary, hidden players
+- `uuidcache.yml` — record of player UUIDs and names
+- `logs/` — chat logs (when logging is enabled in config.yml)
 
-## Usage
+# Disclaimer
+Do not assume any responsibility by use. Please use it at your own risk.
 
-Place [LunaChat.jar](https://github.com/f1w3/lunachat/releases/latest) into your `plugins` folder and start the server.  
+## Build
 
-## BStats
+JDK 21 is required. Gradle is downloaded automatically by the wrapper (`gradlew`), so you don't need to install it.
 
-<https://bstats.org/plugin/bukkit/LunaChat/7936>  
+```
+gradlew.bat clean build
+```
 
-If you don’t want to send statistics,
-set `metricsDisabled` to `true` in `config.yml`.  
+(`./gradlew clean build` on macOS / Linux)
 
-## Download
-
-- Stable: [Download Latest](https://github.com/f1w3/lunachat/releases/latest)  
-- Development: [dev-build](https://github.com/f1w3/LunaChat/releases/tag/dev-build)  
-
-## Support
-
-Support is provided through [Github issues](https://github.com/f1w3/LunaChat/issues).  
-
-Feel free to reach out.  
+The jar is created at `build/libs/LunaChat-<version>.jar` (for example `LunaChat-4.0.0.jar`; the version is `version` in `gradle.properties`).
+In IntelliJ IDEA, run `clean` and then `build` from the Gradle tool window (`Tasks`). Do not use "Build → Build Artifacts", because the class files may not be included.
 
 ## License
 
-This plugin is licensed under **LGPLv3**.  
-
-Please see the [license text](https://www.gnu.org/licenses/lgpl-3.0.en.html) for details.  
+Like the original project, this plugin is licensed under the **GNU Lesser General Public License v3.0 (LGPL v3)**. See [LICENSE](LICENSE) for the full text. Since the LGPL v3 is the GPL v3 with additional permissions, the GPL v3 text is also included in [COPYING](COPYING).
+The original copyright belongs to ucchy and the contributors of the original projects.
