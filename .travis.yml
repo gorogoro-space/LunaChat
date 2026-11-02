@@ -1,6 +1,0 @@
-language: java
-jdk:
-  - openjdk17
-branches:
-  only:
-    - master

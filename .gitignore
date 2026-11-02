@@ -5,6 +5,9 @@
 #IntelliJ
 .idea/
 *.iml
+out/
 /.sts4-cache
 /LunaChat
-/pom.xml.versionsBackup
+#Gradle
+.gradle/
+build/
