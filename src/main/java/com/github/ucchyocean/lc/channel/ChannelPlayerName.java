@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class ChannelPlayerName extends ChannelPlayer {
 
     private final String name;

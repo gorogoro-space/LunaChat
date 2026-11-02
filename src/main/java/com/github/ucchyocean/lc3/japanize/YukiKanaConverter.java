@@ -2,8 +2,6 @@ package com.github.ucchyocean.lc3.japanize;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 
@@ -352,7 +350,7 @@ public class YukiKanaConverter {
      * @since 2.8.10
      */
     private static boolean canStartFromSokuon(String romaji) {
-        return !StringUtils.startsWithAny(romaji, "a", "i", "u", "e", "o", "n");
+        return romaji == null || romaji.isEmpty() || "aiueon".indexOf(romaji.charAt(0)) < 0;
     }
 
     /**
@@ -363,7 +361,7 @@ public class YukiKanaConverter {
      * @since 2.8.10
      */
     public static String conv(String romaji) {
-        return StringUtils.replaceEach(romaji, ROMAJI_LIST, HIRAGANA_LIST);
+        return replaceEach(romaji, ROMAJI_LIST, HIRAGANA_LIST);
     }
 
     /**
@@ -376,6 +374,51 @@ public class YukiKanaConverter {
     public static String fixBrackets(String text) {
         String[] full = new String[] { "（", "）" };
         String[] half = new String[] { "(", ")" };
-        return StringUtils.replaceEach(text, full, half);
+        return replaceEach(text, full, half);
+    }
+
+    /**
+     * 文字列の中の検索語を、対応する置換語に一度だけ置き換える。
+     * commons-lang3 の StringUtils#replaceEach と同じ動き(置き換えた後の文字列は、再び置き換えない)。
+     * 先頭から見て最も早く現れる検索語を置き換え、同じ位置で複数の検索語が一致する場合は、配列で先にあるものを使う。
+     *
+     * @param text            置き換える対象の文字列
+     * @param searchList      検索語の配列
+     * @param replacementList 置換語の配列(searchList と同じ長さ)
+     * @return 置き換えた後の文字列
+     */
+    private static String replaceEach(String text, String[] searchList, String[] replacementList) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        // 検索語ごとの次の出現位置(-1 は、これ以上現れない)
+        int[] nextIndex = new int[searchList.length];
+        for (int i = 0; i < searchList.length; i++) {
+            nextIndex[i] = searchList[i].isEmpty() ? -1 : text.indexOf(searchList[i]);
+        }
+
+        StringBuilder result = new StringBuilder(text.length());
+        int start = 0;
+        while (true) {
+            int foundIndex = -1;
+            int found = -1;
+            for (int i = 0; i < searchList.length; i++) {
+                if (nextIndex[i] != -1 && nextIndex[i] < start) {
+                    nextIndex[i] = text.indexOf(searchList[i], start);
+                }
+                if (nextIndex[i] != -1 && (foundIndex == -1 || nextIndex[i] < foundIndex)) {
+                    foundIndex = nextIndex[i];
+                    found = i;
+                }
+            }
+            if (found == -1) {
+                break;
+            }
+            result.append(text, start, foundIndex).append(replacementList[found]);
+            start = foundIndex + searchList[found].length();
+        }
+        result.append(text, start, text.length());
+        return result.toString();
     }
 }

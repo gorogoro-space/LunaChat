@@ -8,8 +8,8 @@ package com.github.ucchyocean.lc3.member;
 import com.github.ucchyocean.lc3.LunaChat;
 import com.github.ucchyocean.lc3.LunaChatBukkit;
 import com.github.ucchyocean.lc3.bridge.VaultChatBridge;
-import com.github.ucchyocean.lc3.util.BlockLocation;
-import net.md_5.bungee.api.chat.BaseComponent;
+import com.github.ucchyocean.lc3.util.UtilityBukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -49,16 +49,16 @@ public class ChannelMemberPlayer extends ChannelMemberBukkit {
     /**
      * プレイヤー名からUUIDを取得してChannelMemberPlayerを作成して返す
      *
+     * Mojang API への問い合わせは行わず、オンラインのプレイヤーとサーバーのキャッシュから探す。
+     *
      * @param name プレイヤー名
-     * @return ChannelMemberPlayer
+     * @return ChannelMemberPlayer、見つからなければ null
      */
     public static ChannelMemberPlayer getChannelMemberPlayerFromName(String name) {
-        Player player = Bukkit.getPlayerExact(name);
-        if (player != null) {
-            return new ChannelMemberPlayer(player.getUniqueId());
+        OfflinePlayer offline = Bukkit.getOfflinePlayerIfCached(name);
+        if (offline == null) {
+            return null;
         }
-        OfflinePlayer offline = Bukkit.getOfflinePlayer(name);
-        offline.getUniqueId();
         return new ChannelMemberPlayer(offline.getUniqueId());
     }
 
@@ -75,13 +75,34 @@ public class ChannelMemberPlayer extends ChannelMemberBukkit {
         return new ChannelMemberPlayer(sender.getName());
     }
 
+    /**
+     * 名前またはUUIDから、ChannelMemberPlayerを作成して返す。
+     * 名前の場合は、Mojang API への問い合わせは行わず、オンラインのプレイヤーとサーバーのキャッシュから探す。
+     *
+     * @param nameOrUuid 名前、または、"$" + UUID
+     * @return ChannelMemberPlayer、名前が見つからなければ null
+     */
     public static ChannelMemberPlayer getChannelMember(String nameOrUuid) {
         if (nameOrUuid.startsWith("$")) {
             return new ChannelMemberPlayer(nameOrUuid.substring(1));
         } else {
-            OfflinePlayer op = Bukkit.getOfflinePlayer(nameOrUuid);
-            return new ChannelMemberPlayer(op.getUniqueId());
+            return getChannelMemberPlayerFromName(nameOrUuid);
         }
+    }
+
+    /**
+     * オンラインのプレイヤーを名前から検索して返す。
+     * Mojang API への問い合わせ（Bukkit#getOfflinePlayer）は行わない。
+     *
+     * @param name プレイヤー名（大文字小文字は区別しない）
+     * @return オンラインなら ChannelMemberPlayer、いなければ null
+     */
+    public static ChannelMemberPlayer getOnlineChannelMember(String name) {
+        Player player = Bukkit.getPlayerExact(name);
+        if (player == null) {
+            return null;
+        }
+        return new ChannelMemberPlayer(player.getUniqueId());
     }
 
     /**
@@ -125,7 +146,7 @@ public class ChannelMemberPlayer extends ChannelMemberBukkit {
     public String getDisplayName() {
         Player player = getPlayer();
         if (player != null) {
-            return player.getDisplayName();
+            return UtilityBukkit.toLegacyText(player.displayName());
         }
         return getName();
     }
@@ -187,13 +208,13 @@ public class ChannelMemberPlayer extends ChannelMemberBukkit {
      * メッセージを送る
      *
      * @param message 送るメッセージ
-     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.md_5.bungee.api.chat.BaseComponent[])
+     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.kyori.adventure.text.Component)
      */
-    public void sendMessage(BaseComponent[] message) {
-        if (message == null || message.length == 0) return;
+    public void sendMessage(Component message) {
+        if (message == null || Component.empty().equals(message)) return;
         Player player = getPlayer();
         if (player != null) {
-            player.spigot().sendMessage(message);
+            player.sendMessage(message);
         }
     }
 
@@ -308,18 +329,5 @@ public class ChannelMemberPlayer extends ChannelMemberBukkit {
     @Override
     public String toString() {
         return "$" + id.toString();
-    }
-
-    public ChannelMemberOther toChannelMemberOther() {
-        ChannelMemberOther other = new ChannelMemberOther(getName(), getDisplayName(),
-                getPrefix(), getSuffix(), getBlockLocation(), id.toString());
-        other.setWorldName(getWorldName());
-        return other;
-    }
-
-    private BlockLocation getBlockLocation() {
-        Location loc = getLocation();
-        if (loc == null) return null;
-        return new BlockLocation(getWorldName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 }

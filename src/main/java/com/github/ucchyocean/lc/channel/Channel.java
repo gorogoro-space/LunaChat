@@ -21,6 +21,7 @@ import java.util.Map;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class Channel {
 
     private final com.github.ucchyocean.lc3.channel.Channel channel;
@@ -40,6 +41,7 @@ public class Channel {
      * @return 1:1チャットかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isPersonalChat() {
         return channel.isPersonalChat();
     }
@@ -50,6 +52,7 @@ public class Channel {
      * @return ブロードキャストチャンネルかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isBroadcastChannel() {
         return channel.isBroadcastChannel();
     }
@@ -60,6 +63,7 @@ public class Channel {
      * @return グローバルチャンネルかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isGlobalChannel() {
         return channel.isGlobalChannel();
     }
@@ -70,6 +74,7 @@ public class Channel {
      * @return 強制参加チャンネルかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isForceJoinChannel() {
         return channel.isForceJoinChannel();
     }
@@ -81,6 +86,7 @@ public class Channel {
      * @return チャンネルのモデレータ権限を持っているかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean hasModeratorPermission(CommandSender sender) {
         return channel.hasModeratorPermission(ChannelMember.getChannelMember(sender));
     }
@@ -92,6 +98,7 @@ public class Channel {
      * @param message 発言をするメッセージ
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void chat(ChannelPlayer player, String message) {
         channel.chat(ChannelMember.getChannelMember(player.getPlayer()), message);
     }
@@ -104,6 +111,7 @@ public class Channel {
      * @param message メッセージ
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void chatFromOtherSource(String player, String source, String message) {
         channel.chatFromOtherSource(player, source, message);
     }
@@ -114,6 +122,7 @@ public class Channel {
      * @param name 追加するプレイヤー
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void addMember(ChannelPlayer player) {
         if (player != null) {
             channel.addMember(ChannelMember.getChannelMember(player.toString()));
@@ -126,6 +135,7 @@ public class Channel {
      * @param name 削除するプレイヤー
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void removeMember(ChannelPlayer player) {
         if (player != null) {
             channel.removeMember(ChannelMember.getChannelMember(player.toString()));
@@ -138,6 +148,7 @@ public class Channel {
      * @param player 追加するプレイヤー
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void addModerator(ChannelPlayer player) {
         if (player != null) {
             channel.addModerator(ChannelMember.getChannelMember(player.toString()));
@@ -150,6 +161,7 @@ public class Channel {
      * @param player 削除するプレイヤー
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void removeModerator(ChannelPlayer player) {
         if (player != null) {
             channel.removeModerator(ChannelMember.getChannelMember(player.toString()));
@@ -163,6 +175,7 @@ public class Channel {
      * @param player プレイヤー
      * @deprecated Legacy Version
      */
+    @Deprecated
     protected void sendSystemMessage(String key, ChannelPlayer player) {
         // do nothing.
     }
@@ -177,6 +190,7 @@ public class Channel {
      * @param displayName 発言者の表示名（APIに使用されます）
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void sendMessage(
             ChannelPlayer player, String message, String format, boolean sendDynmap, String displayName) {
         if (format != null) {
@@ -196,6 +210,7 @@ public class Channel {
      * @return チャンネル情報
      * @deprecated Legacy Version
      */
+    @Deprecated
     public ArrayList<String> getInfo(boolean forModerator) {
         return new ArrayList<String>(channel.getInfo(forModerator));
     }
@@ -210,6 +225,7 @@ public class Channel {
      * @return ログデータ
      * @deprecated Legacy Version
      */
+    @Deprecated
     public ArrayList<String> getLog(
             String player, String filter, String date, boolean reverse) {
         return new ArrayList<String>(channel.getLog(player, filter, date, reverse));
@@ -221,6 +237,7 @@ public class Channel {
      * @return オンライン人数
      * @deprecated Legacy Version
      */
+    @Deprecated
     public int getOnlineNum() {
         return channel.getOnlineNum();
     }
@@ -231,6 +248,7 @@ public class Channel {
      * @return 総参加人数
      * @deprecated Legacy Version
      */
+    @Deprecated
     public int getTotalNum() {
         return channel.getTotalNum();
     }
@@ -240,6 +258,7 @@ public class Channel {
      *
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void checkExpires() {
         channel.checkExpires();
     }
@@ -250,6 +269,7 @@ public class Channel {
      * @return チャンネルの別名
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getAlias() {
         return channel.getAlias();
     }
@@ -260,6 +280,7 @@ public class Channel {
      * @param alias チャンネルの別名
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setAlias(String alias) {
         channel.setAlias(alias);
     }
@@ -270,6 +291,7 @@ public class Channel {
      * @return チャンネルの説明文
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getDescription() {
         return channel.getDescription();
     }
@@ -280,6 +302,7 @@ public class Channel {
      * @param description チャンネルの説明文
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setDescription(String description) {
         channel.setDescription(description);
     }
@@ -290,6 +313,7 @@ public class Channel {
      * @return チャンネルのパスワード
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getPassword() {
         return channel.getPassword();
     }
@@ -300,6 +324,7 @@ public class Channel {
      * @param password チャンネルのパスワード
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setPassword(String password) {
         channel.setPassword(password);
     }
@@ -310,6 +335,7 @@ public class Channel {
      * @return チャンネルの可視性
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isVisible() {
         return channel.isVisible();
     }
@@ -320,6 +346,7 @@ public class Channel {
      * @param visible チャンネルの可視性
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setVisible(boolean visible) {
         channel.setVisible(visible);
     }
@@ -330,6 +357,7 @@ public class Channel {
      * @return チャンネルのメッセージフォーマット
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getFormat() {
         return channel.getFormat();
     }
@@ -340,6 +368,7 @@ public class Channel {
      * @param format チャンネルのメッセージフォーマット
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setFormat(String format) {
         channel.setFormat(format);
     }
@@ -350,6 +379,7 @@ public class Channel {
      * @return チャンネルのメンバー
      * @deprecated Legacy Version
      */
+    @Deprecated
     public List<ChannelPlayer> getMembers() {
         return convertMemberListToPlayerList(channel.getMembers());
     }
@@ -360,6 +390,7 @@ public class Channel {
      * @return チャンネルのモデレーター
      * @deprecated Legacy Version
      */
+    @Deprecated
     public List<ChannelPlayer> getModerator() {
         return convertMemberListToPlayerList(channel.getModerator());
     }
@@ -370,6 +401,7 @@ public class Channel {
      * @return チャンネルのBANリスト
      * @deprecated Legacy Version
      */
+    @Deprecated
     public List<ChannelPlayer> getBanned() {
         return convertMemberListToPlayerList(channel.getBanned());
     }
@@ -380,6 +412,7 @@ public class Channel {
      * @return チャンネルのMuteリスト
      * @deprecated Legacy Version
      */
+    @Deprecated
     public List<ChannelPlayer> getMuted() {
         return convertMemberListToPlayerList(channel.getMuted());
     }
@@ -390,6 +423,7 @@ public class Channel {
      * @return banExpires
      * @deprecated Legacy Version
      */
+    @Deprecated
     public Map<ChannelPlayer, Long> getBanExpires() {
         return convertMemberMapToPlayerMap(channel.getBanExpires());
     }
@@ -400,6 +434,7 @@ public class Channel {
      * @return muteExpires
      * @deprecated Legacy Version
      */
+    @Deprecated
     public Map<ChannelPlayer, Long> getMuteExpires() {
         return convertMemberMapToPlayerMap(channel.getMuteExpires());
     }
@@ -410,6 +445,7 @@ public class Channel {
      * @return チャンネルの非表示プレイヤーの一覧
      * @deprecated Legacy Version
      */
+    @Deprecated
     public List<ChannelPlayer> getHided() {
         return convertMemberListToPlayerList(channel.getHided());
     }
@@ -420,6 +456,7 @@ public class Channel {
      * @return チャンネル名
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getName() {
         return channel.getName();
     }
@@ -430,6 +467,7 @@ public class Channel {
      * @return チャンネルのカラーコード
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getColorCode() {
         return channel.getColorCode();
     }
@@ -440,6 +478,7 @@ public class Channel {
      * @param colorCode カラーコード
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setColorCode(String colorCode) {
         channel.setColorCode(colorCode);
     }
@@ -450,6 +489,7 @@ public class Channel {
      * @param broadcast ブロードキャストチャンネルにするかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setBroadcast(boolean broadcast) {
         channel.setBroadcast(broadcast);
     }
@@ -460,6 +500,7 @@ public class Channel {
      * @return 会話の相手のプレイヤー名
      * @deprecated Legacy Version
      */
+    @Deprecated
     public String getPrivateMessageTo() {
         if (channel.getPrivateMessageTo() != null) return channel.getPrivateMessageTo().getName();
         return null;
@@ -471,6 +512,7 @@ public class Channel {
      * @param name 会話の相手のプレイヤー名
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setPrivateMessageTo(String name) {
         channel.setPrivateMessageTo(ChannelMember.getChannelMember(name));
     }
@@ -481,6 +523,7 @@ public class Channel {
      * @return ワールドチャットかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isWorldRange() {
         return channel.isWorldRange();
     }
@@ -491,6 +534,7 @@ public class Channel {
      * @param isWorldRange 同ワールド制限するかどうか
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setWorldRange(boolean isWorldRange) {
         channel.setWorldRange(isWorldRange);
     }
@@ -501,6 +545,7 @@ public class Channel {
      * @return チャットの可聴範囲
      * @deprecated Legacy Version
      */
+    @Deprecated
     public int getChatRange() {
         return channel.getChatRange();
     }
@@ -511,6 +556,7 @@ public class Channel {
      * @param range 可聴範囲
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setChatRange(int range) {
         channel.setChatRange(range);
     }
@@ -521,6 +567,7 @@ public class Channel {
      * @return allowccを返す
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean isAllowCC() {
         return channel.isAllowCC();
     }
@@ -531,6 +578,7 @@ public class Channel {
      * @param allowcc 使用可否
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setAllowCC(boolean allowcc) {
         channel.setAllowCC(allowcc);
     }
@@ -541,6 +589,7 @@ public class Channel {
      * @return japanize
      * @deprecated Legacy Version
      */
+    @Deprecated
     public JapanizeType getJapanizeType() {
         String value = (channel.getJapanizeType() != null) ? channel.getJapanizeType().name() : "";
         return JapanizeType.fromID(value, null);
@@ -552,6 +601,7 @@ public class Channel {
      * @param japanize japanize
      * @deprecated Legacy Version
      */
+    @Deprecated
     public void setJapanizeType(JapanizeType japanize) {
         channel.setJapanizeType(com.github.ucchyocean.lc3.japanize.JapanizeType.fromID(
                 japanize.name(), null));
@@ -563,6 +613,7 @@ public class Channel {
      * @return 保存をしたかどうか。
      * @deprecated Legacy Version
      */
+    @Deprecated
     public boolean save() {
         return channel.save();
     }
@@ -575,7 +626,6 @@ public class Channel {
      */
     private ChannelPlayer convertChannelMemberToChannelPlayer(ChannelMember cm) {
         if (cm == null) return null;
-        if (cm instanceof ChannelMemberBungee) return null; // Bungeeモードの場合は変換できない
         if (cm instanceof ChannelMemberPlayer) {
             return ChannelPlayer.getChannelPlayer(cm.toString());
         } else if (cm instanceof ChannelMemberBukkitConsole) {

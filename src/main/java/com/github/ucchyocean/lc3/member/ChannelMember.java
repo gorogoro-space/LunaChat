@@ -7,7 +7,7 @@ package com.github.ucchyocean.lc3.member;
 
 import com.github.ucchyocean.lc3.LunaChat;
 import com.github.ucchyocean.lc3.LunaChatMode;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 
 /**
  * チャンネルメンバーの抽象クラス
@@ -25,10 +25,21 @@ public abstract class ChannelMember implements Comparable<ChannelMember> {
     public static ChannelMember getChannelMember(String nameOrUuid) {
         if (LunaChat.getMode() == LunaChatMode.BUKKIT) {
             return ChannelMemberPlayer.getChannelMember(nameOrUuid);
-        } else if (LunaChat.getMode() == LunaChatMode.BUNGEE) {
-            return ChannelMemberProxiedPlayer.getChannelMember(nameOrUuid);
         }
         return null; // TODO standalone用のChannelMemberを返す
+    }
+
+    /**
+     * オンラインのメンバーを名前から検索して返す。
+     *
+     * @param name プレイヤー名
+     * @return オンラインなら ChannelMember、いなければ null
+     */
+    public static ChannelMember getOnlineChannelMember(String name) {
+        if (LunaChat.getMode() == LunaChatMode.BUKKIT) {
+            return ChannelMemberPlayer.getOnlineChannelMember(name);
+        }
+        return null;
     }
 
     /**
@@ -43,8 +54,6 @@ public abstract class ChannelMember implements Comparable<ChannelMember> {
 
         if (LunaChat.getMode() == LunaChatMode.BUKKIT) {
             return ChannelMemberBukkit.getChannelMemberBukkit(obj);
-        } else if (LunaChat.getMode() == LunaChatMode.BUNGEE) {
-            return ChannelMemberBungee.getChannelMemberBungee(obj);
         }
         return null; // TODO standalone用のChannelMemberを返す
     }
@@ -96,7 +105,7 @@ public abstract class ChannelMember implements Comparable<ChannelMember> {
      *
      * @param message 送るメッセージ
      */
-    public abstract void sendMessage(BaseComponent[] message);
+    public abstract void sendMessage(Component message);
 
     /**
      * 発言者が今いるワールドのワールド名を取得する

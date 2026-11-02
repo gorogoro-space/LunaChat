@@ -19,6 +19,7 @@ import java.util.UUID;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class ChannelPlayerUUID extends ChannelPlayer {
 
     private final UUID id;

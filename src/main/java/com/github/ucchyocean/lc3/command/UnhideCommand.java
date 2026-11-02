@@ -138,6 +138,10 @@ public class UnhideCommand extends LunaChatSubCommand {
 
             // 既に表示になっていないかどうかをチェックする
             ChannelMember hided = ChannelMember.getChannelMember(cname);
+            if (hided == null) {
+                sender.sendMessage(Messages.errmsgNotExistChannelAndPlayer());
+                return true;
+            }
             if (!api.getHidelist(hided).contains(sender)) {
                 sender.sendMessage(Messages.errmsgAlreadyUnhidedPlayer());
                 return true;

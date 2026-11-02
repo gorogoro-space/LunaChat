@@ -5,7 +5,8 @@
  */
 package com.github.ucchyocean.lc3.member;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import com.github.ucchyocean.lc3.util.UtilityBukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -101,11 +102,11 @@ public class ChannelMemberBukkitConsole extends ChannelMemberBukkit {
      * メッセージを送る
      *
      * @param message 送るメッセージ
-     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.md_5.bungee.api.chat.BaseComponent[])
+     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.kyori.adventure.text.Component)
      */
-    public void sendMessage(BaseComponent[] message) {
-        if (message == null || message.length == 0) return;
-        sender.spigot().sendMessage(message);
+    public void sendMessage(Component message) {
+        if (message == null || Component.empty().equals(message)) return;
+        sender.sendMessage(message);
     }
 
     /**
@@ -172,7 +173,7 @@ public class ChannelMemberBukkitConsole extends ChannelMemberBukkit {
      * @see com.github.ucchyocean.lc3.member.ChannelMember#chat(java.lang.String)
      */
     public void chat(String message) {
-        Bukkit.broadcastMessage("<" + getName() + ">" + message);
+        Bukkit.broadcast(UtilityBukkit.fromLegacyText("<" + getName() + ">" + message));
     }
 
     /**

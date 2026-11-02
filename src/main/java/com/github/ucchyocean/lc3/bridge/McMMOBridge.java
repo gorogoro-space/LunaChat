@@ -15,6 +15,7 @@ import com.github.ucchyocean.lc3.member.ChannelMember;
 import com.github.ucchyocean.lc3.util.Utility;
 import com.gmail.nossr50.api.PartyAPI;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.mcmmo.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,15 +40,15 @@ public class McMMOBridge implements Listener {
     public void onMcMMOPartyChatEvent(McMMOPartyChatEvent event) {
 
         // mcMMOから、パーティのメンバーを取得する
-        List<Player> recipients = PartyAPI.getOnlineMembers(event.getParty());
+        List<Player> recipients = PartyAPI.getOnlineMembers(event.getAuthorParty().getName());
 
-        String message = event.getMessage();
+        String message = event.getRawMessage();
 
         // ---- 送信者を反射で解決（getSender()/getPlayer()/getAuthor()/get*Name() などに対応）----
         CommandSender sender = resolveMcMMOSender(event);
         if (sender == null) {
             // 送信者が取れない場合は、変換等せずメッセージだけ反映して終了
-            event.setMessage(message);
+            event.setMessagePayload(Component.text(message));
             return;
         }
         ChannelMember player = ChannelMember.getChannelMember(sender);
@@ -110,7 +111,7 @@ public class McMMOBridge implements Listener {
         }
 
         // 発言内容をイベントに反映
-        event.setMessage(message);
+        event.setMessagePayload(Component.text(message));
     }
 
     /**

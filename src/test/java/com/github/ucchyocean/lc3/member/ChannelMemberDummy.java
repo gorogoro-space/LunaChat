@@ -5,7 +5,8 @@
  */
 package com.github.ucchyocean.lc3.member;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 /**
  * テスト用のダミーメンバー
@@ -70,14 +71,11 @@ public class ChannelMemberDummy extends ChannelMember {
 
     /**
      * @param message
-     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.md_5.bungee.api.chat.BaseComponent[])
+     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.kyori.adventure.text.Component)
      */
     @Override
-    public void sendMessage(BaseComponent[] message) {
-        for (BaseComponent comp : message) {
-            System.out.print(comp.toLegacyText());
-        }
-        System.out.println();
+    public void sendMessage(Component message) {
+        System.out.println(LegacyComponentSerializer.legacySection().serialize(message));
     }
 
     /**

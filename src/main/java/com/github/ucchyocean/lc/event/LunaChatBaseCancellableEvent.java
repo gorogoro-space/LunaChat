@@ -13,6 +13,7 @@ import org.bukkit.event.Cancellable;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatBaseCancellableEvent extends LunaChatBaseEvent implements Cancellable {
 
     private boolean isCancelled;

@@ -5,7 +5,8 @@
  */
 package com.github.ucchyocean.lc3.member;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import com.github.ucchyocean.lc3.util.UtilityBukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -100,9 +101,9 @@ public class ChannelMemberBlock extends ChannelMemberBukkit {
      * メッセージを送る、実際は何もせずにメッセージを捨てる
      *
      * @param message 送るメッセージ
-     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.md_5.bungee.api.chat.BaseComponent[])
+     * @see com.github.ucchyocean.lc3.member.ChannelMember#sendMessage(net.kyori.adventure.text.Component)
      */
-    public void sendMessage(BaseComponent[] message) {
+    public void sendMessage(Component message) {
         // do nothing.
     }
 
@@ -173,7 +174,7 @@ public class ChannelMemberBlock extends ChannelMemberBukkit {
      * @see com.github.ucchyocean.lc3.member.ChannelMember#chat(java.lang.String)
      */
     public void chat(String message) {
-        Bukkit.broadcastMessage("<" + getName() + "> " + message);
+        Bukkit.broadcast(UtilityBukkit.fromLegacyText("<" + getName() + "> " + message));
     }
 
     /**

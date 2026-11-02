@@ -11,14 +11,12 @@ import com.github.ucchyocean.lc3.event.EventResult;
 import com.github.ucchyocean.lc3.japanize.JapanizeType;
 import com.github.ucchyocean.lc3.member.ChannelMember;
 import com.github.ucchyocean.lc3.member.ChannelMemberBukkit;
-import com.github.ucchyocean.lc3.member.ChannelMemberOther;
 import com.github.ucchyocean.lc3.member.ChannelMemberPlayer;
-import com.github.ucchyocean.lc3.messaging.BukkitChatMessage;
+import com.github.ucchyocean.lc3.util.ChatColor;
 import com.github.ucchyocean.lc3.util.ClickableFormat;
 import com.github.ucchyocean.lc3.util.Utility;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
+import com.github.ucchyocean.lc3.util.UtilityBukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,6 +36,12 @@ import java.util.regex.Pattern;
 
 /**
  * Bukkit関連のイベントを監視するリスナ
+ * <p>
+ * チャットは、Paper で非推奨の AsyncPlayerChatEvent で受け取る。
+ * Paper は発言ごとに、AsyncPlayerChatEvent を最後(MONITOR)まで処理してから AsyncChatEvent を出す。
+ * dynmap(Web マップへのチャットの転送)や mcMMO・CoreProtect などは AsyncPlayerChatEvent で受け取っているため、
+ * LunaChat が AsyncChatEvent で発言を止めても、それらには止まっていない発言として届いてしまう
+ * (チャンネルの発言が Web マップに出るなど)。同じイベントで受け取り、今までと同じ順番で処理するためにこうしている。
  *
  * @author ucchy
  */
@@ -46,24 +50,11 @@ public class BukkitEventListener implements Listener {
     private static final int MAX_LIST_ITEMS = 8;
 
     /**
-     * BaseComponent配列を、カラーコードを含むStringに変換する
-     *
-     * @param comps BaseComponentの配列
-     * @return カラーコードを含むString
-     */
-    private static String makeLegacyText(BaseComponent[] comps) {
-        StringBuilder builder = new StringBuilder();
-        for (BaseComponent comp : comps) {
-            builder.append(comp.toLegacyText());
-        }
-        return builder.toString();
-    }
-
-    /**
      * プレイヤーがチャット発言したときに呼び出されるメソッド
      *
      * @param event
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onAsyncPlayerChatLowest(AsyncPlayerChatEvent event) {
         if (matchesEventPriority(EventPriority.LOWEST)) {
@@ -76,6 +67,7 @@ public class BukkitEventListener implements Listener {
      *
      * @param event
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onAsyncPlayerChatLow(AsyncPlayerChatEvent event) {
         if (matchesEventPriority(EventPriority.LOW)) {
@@ -88,6 +80,7 @@ public class BukkitEventListener implements Listener {
      *
      * @param event
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onAsyncPlayerChatNormal(AsyncPlayerChatEvent event) {
         if (matchesEventPriority(EventPriority.NORMAL)) {
@@ -100,6 +93,7 @@ public class BukkitEventListener implements Listener {
      *
      * @param event
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAsyncPlayerChatHigh(AsyncPlayerChatEvent event) {
         if (matchesEventPriority(EventPriority.HIGH)) {
@@ -112,6 +106,7 @@ public class BukkitEventListener implements Listener {
      *
      * @param event
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAsyncPlayerChatHighest(AsyncPlayerChatEvent event) {
         if (matchesEventPriority(EventPriority.HIGHEST)) {
@@ -144,7 +139,7 @@ public class BukkitEventListener implements Listener {
 
         // チャンネルチャット情報を表示する
         if (config.isShowListOnJoin()) {
-            for (BaseComponent[] msg : getListForMotd(player)) {
+            for (Component msg : getListForMotd(player)) {
                 ChannelMember.getChannelMember(player).sendMessage(msg);
             }
         }
@@ -191,34 +186,11 @@ public class BukkitEventListener implements Listener {
      *
      * @param event チャットイベント
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     private void processChatEvent(AsyncPlayerChatEvent event) {
 
         LunaChatConfig config = LunaChat.getConfig();
         LunaChatAPI api = LunaChat.getAPI();
-
-        // Bungeeパススルーモードなら、メッセージを返送して終了する
-        if (config.isBungeePassThroughMode()) {
-
-            // メッセージの返送
-            ChannelMember member = ChannelMember.getChannelMember(event.getPlayer());
-            if (member instanceof ChannelMemberPlayer) {
-                ChannelMemberOther other = ((ChannelMemberPlayer) member).toChannelMemberOther();
-                BukkitChatMessage msg = new BukkitChatMessage(other, event.getMessage());
-                LunaChatBukkit.getInstance().sendPluginMessage(msg.toByteArray());
-
-                // 設定が有効ならコンソールに表示する
-                if (config.isDisplayNormalChatOnConsole()) {
-                    String logmsg = event.getFormat()
-                            .replace("%1$s", member.getDisplayName())
-                            .replace("%2$s", event.getMessage());
-                    LunaChat.getPlugin().log(Level.INFO, logmsg);
-                }
-            }
-
-            // イベントをキャンセルして終了する
-            event.setCancelled(true);
-            return;
-        }
 
         // 頭にglobalMarkerが付いている場合は、グローバル発言にする
         if (config.getGlobalMarker() != null &&
@@ -288,6 +260,7 @@ public class BukkitEventListener implements Listener {
      *
      * @param event 処理するイベント
      */
+    @SuppressWarnings("deprecation") // AsyncPlayerChatEvent を使う理由はクラスのコメントを参照
     private void chatGlobal(AsyncPlayerChatEvent event) {
 
         LunaChatConfig config = LunaChat.getConfig();
@@ -409,7 +382,7 @@ public class BukkitEventListener implements Listener {
 
                 // 発言内容の送信
                 format.replace("%msg", message);
-                BaseComponent[] comps = format.makeTextComponent();
+                Component comps = format.makeTextComponent();
                 for (Player recipient : event.getRecipients()) {
                     ChannelMember cm = ChannelMember.getChannelMember(recipient);
                     if (cm != null) {
@@ -422,7 +395,7 @@ public class BukkitEventListener implements Listener {
 
                 // 設定が有効ならコンソールに表示する
                 if (config.isDisplayNormalChatOnConsole()) {
-                    LunaChat.getPlugin().log(Level.INFO, makeLegacyText(comps));
+                    LunaChat.getPlugin().log(Level.INFO, UtilityBukkit.toLegacyText(comps));
                 }
 
             } else {
@@ -511,7 +484,7 @@ public class BukkitEventListener implements Listener {
      * @param player プレイヤー
      * @return リスト
      */
-    private ArrayList<BaseComponent[]> getListForMotd(Player player) {
+    private ArrayList<Component> getListForMotd(Player player) {
 
         ChannelMember cp = ChannelMember.getChannelMember(player);
         LunaChatAPI api = LunaChat.getAPI();
@@ -529,8 +502,8 @@ public class BukkitEventListener implements Listener {
         });
 
         int count = 0;
-        ArrayList<BaseComponent[]> items = new ArrayList<>();
-        items.add(TextComponent.fromLegacyText(Messages.motdFirstLine()));
+        ArrayList<Component> items = new ArrayList<>();
+        items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.motdFirstLine()));
         for (Channel channel : channels) {
 
             // BANされているチャンネルは表示しない
@@ -563,7 +536,7 @@ public class BukkitEventListener implements Listener {
                 break;
             }
         }
-        items.add(TextComponent.fromLegacyText(Messages.listEndLine()));
+        items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.listEndLine()));
 
         return items;
     }

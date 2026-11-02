@@ -154,6 +154,10 @@ public class HideCommand extends LunaChatSubCommand {
 
             // 既に非表示になっていないかどうかをチェックする
             ChannelMember hided = ChannelMember.getChannelMember(cname);
+            if (hided == null) {
+                sender.sendMessage(Messages.errmsgNotExistChannelAndPlayer());
+                return true;
+            }
             if (api.getHidelist(hided).contains(sender)) {
                 sender.sendMessage(Messages.errmsgAlreadyHidedPlayer());
                 return true;

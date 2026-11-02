@@ -13,6 +13,7 @@ import com.github.ucchyocean.lc.channel.ChannelPlayer;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelChatEvent extends LunaChatBaseCancellableEvent {
 
     private final ChannelPlayer player;

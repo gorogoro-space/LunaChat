@@ -1,10 +1,12 @@
+
 name: ${project.name}
 main: com.github.ucchyocean.lc3.LunaChatBukkit
 version: ${project.version}
-authors: [ ucchy, YukiLeafX, LazyGon, tomo1560 ]
+authors: [ ucchy, YukiLeafX, LazyGon, tomo1560, kubotan ]
+website: https://github.com/gorogoro-space/LunaChat
 description: ${project.description}
 softdepend: [ Vault, dynmap, mcMMO, Multiverse-Core]
-api-version: 1.18
+api-version: '1.21.11'
 load: POSTWORLD
 commands:
   lunachat:

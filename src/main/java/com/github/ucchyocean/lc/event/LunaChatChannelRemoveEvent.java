@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelRemoveEvent extends LunaChatBaseCancellableEvent {
 
     private final CommandSender sender;

@@ -45,6 +45,7 @@ public class LunaChatBukkitChannelCreateEvent extends LunaChatBukkitBaseCancella
      * @deprecated チャンネル作成イベントは、チャンネルを作成する前に呼び出されるので、
      * このメソッドの戻り値は必ずnullになります。
      */
+    @Deprecated
     @Override
     public Channel getChannel() {
         return super.getChannel();

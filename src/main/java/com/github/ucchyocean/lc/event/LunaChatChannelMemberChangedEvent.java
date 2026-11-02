@@ -15,6 +15,7 @@ import java.util.List;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelMemberChangedEvent extends LunaChatBaseCancellableEvent {
 
     private final List<ChannelPlayer> before;

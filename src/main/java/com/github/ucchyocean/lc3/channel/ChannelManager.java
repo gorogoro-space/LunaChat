@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author ucchy
  */
-public class ChannelManager implements LunaChatAPI {
+public final class ChannelManager implements LunaChatAPI {
 
     private static final String FILE_NAME_DCHANNELS = "defaults.yml";
     private static final String FILE_NAME_TEMPLATES = "templates.yml";
@@ -131,7 +131,10 @@ public class ChannelManager implements LunaChatAPI {
         for (String key : configHidelist.getKeys(false)) {
             hidelist.put(key, new ArrayList<>());
             for (String id : configHidelist.getStringList(key)) {
-                hidelist.get(key).add(ChannelMember.getChannelMember(id));
+                ChannelMember member = ChannelMember.getChannelMember(id);
+                if (member != null) {
+                    hidelist.get(key).add(member);
+                }
             }
         }
 
@@ -404,8 +407,6 @@ public class ChannelManager implements LunaChatAPI {
         Channel channel;
         if (LunaChat.getMode() == LunaChatMode.BUKKIT) {
             channel = new BukkitChannel(name);
-        } else if (LunaChat.getMode() == LunaChatMode.BUNGEE) {
-            channel = new BungeeChannel(name);
         } else {
             channel = new StandaloneChannel(name);
         }
@@ -562,7 +563,10 @@ public class ChannelManager implements LunaChatAPI {
         ArrayList<ChannelMember> info = new ArrayList<>();
         for (String key : hidelist.keySet()) {
             if (hidelist.get(key).contains(player)) {
-                info.add(ChannelMember.getChannelMember(key));
+                ChannelMember member = ChannelMember.getChannelMember(key);
+                if (member != null) {
+                    info.add(member);
+                }
             }
         }
         return info;

@@ -9,8 +9,8 @@ import com.github.ucchyocean.lc3.Messages;
 import com.github.ucchyocean.lc3.channel.Channel;
 import com.github.ucchyocean.lc3.member.ChannelMember;
 import com.github.ucchyocean.lc3.util.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.github.ucchyocean.lc3.util.UtilityBukkit;
+import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,7 +93,7 @@ public class ListCommand extends LunaChatSubCommand {
         }
 
         // リストを取得して表示する
-        for (BaseComponent[] msg : getList(sender, page)) {
+        for (Component msg : getList(sender, page)) {
             sender.sendMessage(msg);
         }
         return true;
@@ -106,25 +106,25 @@ public class ListCommand extends LunaChatSubCommand {
      * @param page   表示するページ、0を指定した場合は全表示
      * @return リスト
      */
-    private ArrayList<BaseComponent[]> getList(ChannelMember player, int page) {
+    private ArrayList<Component> getList(ChannelMember player, int page) {
 
-        ArrayList<BaseComponent[]> list = getPlayerList(player);
+        ArrayList<Component> list = getPlayerList(player);
         int size = list.size();
-        int maxPage = (int) (size / PAGE_SIZE) + 1;
+        int maxPage = (size / PAGE_SIZE) + 1;
 
         if (page < 0) page = 0;
         if (page > maxPage) page = maxPage;
 
-        ArrayList<BaseComponent[]> items = new ArrayList<>();
+        ArrayList<Component> items = new ArrayList<>();
         if (page == 0) { // 全表示
-            items.add(TextComponent.fromLegacyText(Messages.listFirstLine()));
+            items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.listFirstLine()));
             items.addAll(list);
-            items.add(TextComponent.fromLegacyText(Messages.listEndLine()));
+            items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.listEndLine()));
         } else { // ページ表示
-            items.add(TextComponent.fromLegacyText(Messages.listFirstLinePaging(page, maxPage)));
+            items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.listFirstLinePaging(page, maxPage)));
             int endIndex = (page * PAGE_SIZE > size) ? size : page * PAGE_SIZE;
             items.addAll(list.subList((page - 1) * PAGE_SIZE, endIndex));
-            items.add(TextComponent.fromLegacyText(Messages.listEndLine()));
+            items.add(UtilityBukkit.fromLegacyTextWithUrls(Messages.listEndLine()));
         }
 
         return items;
@@ -136,7 +136,7 @@ public class ListCommand extends LunaChatSubCommand {
      * @param player プレイヤー
      * @return チャンネルリスト
      */
-    private ArrayList<BaseComponent[]> getPlayerList(ChannelMember player) {
+    private ArrayList<Component> getPlayerList(ChannelMember player) {
 
         String dchannel = "";
         String playerName = "";
@@ -160,7 +160,7 @@ public class ListCommand extends LunaChatSubCommand {
         });
 
         // 指定されたプレイヤー名に合うように、フィルタ＆表示用整形する。
-        ArrayList<BaseComponent[]> items = new ArrayList<>();
+        ArrayList<Component> items = new ArrayList<>();
         for (Channel channel : channels) {
 
             // BANされているチャンネルは表示しない

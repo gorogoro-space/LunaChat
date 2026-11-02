@@ -16,7 +16,7 @@ import java.io.IOException;
  *
  * @author ucchy
  */
-public class UUIDCacheData {
+public final class UUIDCacheData {
 
     private static final String FILE_NAME = "uuidcache.yml";
     private final File dataFolder;

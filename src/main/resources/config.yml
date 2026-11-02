@@ -4,228 +4,227 @@
 # @copyright  Copyright ucchy 2020
 
 
-# -------------------- General settings --------------------
+# -------------------- 全般設定 --------------------
 
-#Language setting
-lang: en
+# 言語設定
+lang: ja
 
-# Whether to enable channel chat function
+# チャンネルチャット機能を利用可能にするかどうか
+# Japanize機能のみを利用したい場合は、falseにしてください。
 enableChannelChat: true
 
-# You can set the priority of event processing.
-# Use this when it doesn't work well in combination with other plugins.
-# You can specify one of LOWEST, LOW, NORMAL, HIGH, HIGHEST.
-# Leave the default HIGH if you're not sure.
-playerChatEventListenerPriority: 'HIGH'
-
-# Whether to disable the plugin's anonymous usage statistics (bStats) reporting.
-metricsDisabled: false
+# イベント処理の優先度を設定できます。
+# 他のプラグインとの組み合わせでうまく動かないときに使用してください。
+# LOWEST, LOW, NORMAL, HIGH, HIGHEST のどれかを指定できます。
+# 迷ったら既定の HIGHEST のままにしてください。
+playerChatEventListenerPriority: 'HIGHEST'
 
 
-# -------------------- Channel chat settings --------------------
+# -------------------- チャンネルチャット設定 --------------------
 
-# Whether to treat the remarks of people who are not in channel chat as global
+# チャンネルチャットに入っていない人の発言を、グローバルとして扱うかどうか
 noJoinAsGlobal: true
 
-# Whether to leave the contents of channel chat remarks in the log
+# チャンネルチャットの発言内容を、ログに残すかどうか
 loggingChat: true
 
-# Whether to show the contents of channel chat on the server console
+# チャンネルチャットの発言内容を、サーバーコンソールに表示するかどうか
 displayChatOnConsole: true
 
-# Global marker.
-# If this is in the head of a statement, it temporarily becomes a global statement.
+# グローバルマーカー。
+# これが発言の頭に入っている場合は、一時的にグローバル発言になる。
 globalMarker: '!'
 
-# Whether to delete the channel when all members leave
+# 全てのメンバーが退出したときに、チャンネルを削除するかどうか
 zeroMemberRemove: false
 
-# Whether to show participating channels when logging in
+# ログイン時に、参加中チャンネルを表示するかどうか
 showListOnJoin: false
 
-# When someone specifies a channel that does not exist with the "/ch join" command,
-# whether to create a new channel and enter
+# /ch join コマンドで存在しないチャンネルを指定したときに、
+# チャンネルを新規作成して入室するかどうか
 createChannelOnJoinCommand: false
 
-# Global channel to use as default instead of regular chat.
-# If you use regular chat without creating a global channel,
-# specify the empty string ''.
+# 通常のチャットの代わりに、既定として使用するグローバルチャンネル。
+# グローバルチャンネルを作らず通常のチャットを使用する場合は、
+# から文字列 「''」 を指定すること。
 globalChannel: ''
 
-# A channel(s) that users who join the server must join.
-# Can be specified separately from the global channel.
-# Multiple channels can be set. Example) forceJoinChannels: ['L','M','N']
+# サーバーに参加したユーザーに必ず参加させるチャンネル。
+# グローバルチャンネルとは別で指定できる。
+# 複数のチャンネルを設定可能。例）forceJoinChannels: ['L', 'M', 'N']
 forceJoinChannels: [ ]
 
-# A keyword that must be included when executing the format command.
-formatConstraint: [ '%username','%msg' ]
+# formatコマンド実行時に、必ず含まれる必要があるキーワード。
+formatConstraint: [ '%username', '%msg' ]
 
-# The format settings that are set by default when you create a channel.
-# The following keywords can be used for formatting.
-# %ch: Channel name
-# %color: Channel color
-# %displayname: Speaker display name
-# %player: Speaker ID
-# %server: Speaker's connection server name (valid when installed on BungeeCord side.)
-# %world : World name
-# %prefix: prefix (replaced if Vault and Prefix/Suffix plugin are installed)
-# %suffix: suffix (replaced if Vault and Prefix/Suffix plugin are installed)
-# %date: date
-# %time: time
-# %msg: Content of statement
+# チャンネルを作成したときに、デフォルトで設定されるフォーマット設定。
+# フォーマット設定には、下記のキーワードが使用できます。
+# %ch       : チャンネル名
+# %color    : チャンネルカラー
+# %displayname : 発言者表示名
+# %player   : 発言者ID
+# %server   : 発言者の接続サーバー名（BungeeCord側に導入したときに有効です。）
+# %world    : 発言したワールド名
+# %prefix   : プレフィックス（Vaultとパーミッション管理プラグインが導入されている場合に置き換えられます）
+# %suffix   : サフィックス（Vaultとパーミッション管理プラグインが導入されている場合に置き換えられます）
+# %date     : 日付
+# %time     : 時刻
+# %msg      : 発言内容（Japanize変換された場合は、Japanize結果を含みます。）
 defaultFormat: '&f[%color%ch&f]%prefix%displayname%suffix&a:&f %msg'
 
-# Setting to display the content of all channels on the OP screen.
+# OPの画面に、全チャンネルの発言内容を表示する設定。
 opListenAllChannel: false
 
-# The minimum string length that the channel name must satisfy when creating a new channel.
-# If the specified channel name is less than this number of characters, an error occurs and the channel cannot be created.
+# チャンネルを新規作成するときに、チャンネル名が満たさなければならない、最低文字列長。
+# 指定されたチャンネル名がこの文字数を下回る場合は、エラーになってチャンネルを作成できません。
 minChannelNameLength: 4
 
-# Maximum string length that the channel name must satisfy when creating a new channel.
-# If the specified channel name exceeds this number of characters, an error occurs and the channel cannot be created.
+# チャンネルを新規作成するときに、チャンネル名が満たさなければならない、最大文字列長。
+# 指定されたチャンネル名がこの文字数を上回る場合は、エラーになってチャンネルを作成できません。
 maxChannelNameLength: 20
 
-# Whether to enable the quick channel chat feature.
-# You can use Quick Channel Chat by saying "(Channel Name or Alias) + (Dedicated Symbol) + (Message)".
-# For example, if you set the alias m to the main channel, you do not have to speak to the main channel
-# m:Hello!
-# You can say to the main channel by saying.
+# クイックチャンネルチャット機能を有効化するかどうか。
+# クイックチャンネルチャットは、「(チャンネル名 or エイリアス) + (専用の記号) + (発言内容) 」を発言すると使用できます。
+# 例えば、mainチャンネルにエイリアスmを設定しておくと、mainチャンネルを発言先にしなくても、
+# m:こんにちは！
+# と発言することで、mainチャンネルに発言を行うことができます。
 enableQuickChannelChat: true
 
-# Symbol used for quick channel chat feature.
+# クイックチャンネルチャット機能に使用する記号。
 quickChannelChatSeparator: ':'
 
 
-# -------------------- Private message settings --------------------
+# -------------------- プライベートメッセージ設定 --------------------
 
-# When sending a private message with the # /tell, /msg or /r command, applied formatting.
-# The following keywords can be used for formatting.
-# %ch: Channel name (same as "%player>%to")
-# %displayname: Speaker display name
-# %player: Speaker ID
-# %server: Speaker's connection server name (valid when installed on BungeeCord side.)
-# %to: ID of the person (recipient) who speaks
-# %recieverserver: Recipient's connection server name (valid when installed on BungeeCord side)
-# %world: Name of the world you said (Valid when it is installed on the spigot side. When MultiVerse is installed, the display name of the world is acquired and used.)
-# %prefix: prefix (replaced if Vault and Prefix/Suffix plugin are installed)
-# %suffix: suffix (replaced if Vault and Prefix/Suffix plugin are installed)
-# %date: date
-# %time: time
-# %msg: Content of statement (When converted to Japanize, the result of Japanize is included.)
+# /tell や /msg や /r コマンドでプライベートメッセージを送信するときに、
+# 適用されるフォーマット設定。
+# フォーマット設定には、下記のキーワードが使用できます。
+# %ch       : チャンネル名（「%player>%to」と同一です。）
+# %displayname : 発言者表示名
+# %player   : 発言者ID
+# %server   : 発言者の接続サーバー名（BungeeCord側に導入したときに有効です。）
+# %to       : 発言の相手（受信者）のID
+# %recieverserver : 受信者の接続サーバー名（BungeeCord側に導入したときに有効です。）
+# %world    : 発言したワールド名（spigot側に導入したときに有効です。MultiVerseが導入されている場合は、ワールドの表示名を取得して使用します。）
+# %prefix   : プレフィックス（VaultとPermissionsExが導入されている場合に置き換えられます）
+# %suffix   : サフィックス（VaultとPermissionsExが導入されている場合に置き換えられます）
+# %date     : 日付
+# %time     : 時刻
+# %msg      : 発言内容（Japanize変換された場合は、Japanize結果を含みます。）
 defaultFormatForPrivateMessage: '&7[%player -> %to]&f %msg'
 #defaultFormatForPrivateMessage: '&7[%player@%server > %to@%recieverserver] %msg'
 
 
-# -------------------- dynmap linkage setting --------------------
+# -------------------- dynmap連携設定 --------------------
 
-# Whether to send the contents of the broadcast channel to dynmap.
-# This setting is ignored (handled as false) if dynmap is not loaded.
+# ブロードキャストチャンネルの発言内容を、dynmapに送信するかどうか。
+# dynmapがロードされていない場合は、この設定は無視される（false扱い）。
 sendBroadcastChannelChatToDynmap: true
 
-# Whether to reflect the channel format when sending to dynmap.
-# If set to true, a message reflecting the channel format will be displayed on the dynmap.
-# If set to false, only messages will be displayed on dynmap.
-# Reference: https://github.com/ucchyocean/LunaChat/issues/68
+# dynmapへ送信するときに、チャンネルのフォーマットを反映して送信するかどうか。
+# trueにするとチャンネルフォーマットを反映したメッセージをdynmapに表示します。
+# falseにするとメッセージのみをdynmapに表示します。
+# 参考：https://github.com/ucchyocean/LunaChat/issues/68
 sendFormattedMessageToDynmap: false
 
-# A channel that displays the content of the speech made from the dynmap Web UI.
-# If dynmapChannel is not specified and globalChannel is specified,
-# If dynmapChannel is not specified and globalChannel is not specified, the chat is usually done.
+# dynmapのWebUIから発言された発言内容を表示するチャンネル。
+# dynmapChannelが無指定で、globalChannelが指定されているなら、グローバルチャンネルに、
+# dynmapChannelが無指定で、globalChannelも無指定なら、通常チャットに発言される。
 dynmapChannel: ''
 
 
-# -------------------- NG word setting --------------------
 
-# NG word setting. You can specify a regular expression.
-#The NG word part is masked by the player who speaks the word set here.
-ngword: [ ]
+# -------------------- NGワード設定 --------------------
 
-# NG Word operation setting when speaking. You can set any of four: mask, mute, kick, ban.
-# mask: mask NG words
-# mute: Mute the speaking player from the channel after masking the NG word
-# kick: After masking the NG word, kick the speaking player from the channel
-# ban: After masking the NG word, ban the player who said it from the channel
-# For regular chat (non-channel chat),
-# Even if you set # kick or ban, only the mask is executed.
+# NGワード設定。正規表現が指定可能です。
+# ここに設定されたワードを発言したプレイヤーは、NGワード部分がマスクされます。
+ngword:
+  - 'ちん(こ|ぽ|ちん)'
+
+# NGワード発言時の動作設定。mask、mute、kick、ban の4つのいずれかが設定可能。
+# mask : NGワードをマスクする
+# mute : NGワードをマスクしたのち、発言したプレイヤーをチャンネルからMuteする
+# kick : NGワードをマスクしたのち、発言したプレイヤーをチャンネルからキックする
+# ban  : NGワードをマスクしたのち、発言したプレイヤーをチャンネルからBANする
+# ※ 通常チャット（非チャンネルチャット）の場合は、
+#    kickやbanを設定しても、マスクのみが実行されます。
 ngwordAction: mask
 
 
-# -------------------- Normal chat settings --------------------
 
-# Whether to decorate normal chat (non-channel chat) from LunaChat.
+# -------------------- 通常チャット設定 --------------------
+
+# 通常チャット（非チャンネルチャット）の装飾を、LunaChatから行うかどうか。
 enableNormalChatMessageFormat: true
 
-# Chat decoration formatting.
-# The following keywords can be used for formatting.
-# %displayname: Speaker display name
-# %player: Speaker ID
-# %world: Name of the world you said (Valid when it is installed on the spigot side. When MultiVerse is installed, the display name of the world is acquired and used.)
-# %server: Speaker's connection server name (valid when installed on BungeeCord side.)
-# %prefix: prefix (replaced if Vault and Prefix/Suffix plugins are installed)
-# %suffix: suffix (replaced if Vault and Prefix/Suffix plugins are installed)
-# %date: date
-# %time: time
-# %msg: Content of statement (When converted to Japanize, the result of Japanize is included.)
+# チャット装飾のフォーマット設定。
+# フォーマット設定には、下記のキーワードが使用できます。
+# %displayname : 発言者表示名
+# %player   : 発言者ID
+# %world    : 発言したワールド名（spigot側に導入したときに有効です。MultiVerseが導入されている場合は、ワールドの表示名を取得して使用します。）
+# %server   : 発言者の接続サーバー名（BungeeCord側に導入したときに有効です。）
+# %prefix   : プレフィックス（VaultとPrefix/Suffixプラグインが導入されている場合に置き換えられます）
+# %suffix   : サフィックス（VaultとPrefix/Suffixプラグインが導入されている場合に置き換えられます）
+# %date     : 日付
+# %time     : 時刻
+# %msg      : 発言内容（Japanize変換された場合は、Japanize結果を含みます。）
 normalChatMessageFormat: '&f%prefix%displayname%suffix&a:&f %msg'
 #normalChatMessageFormat: '&f%displayname@%server&a:&f %msg'
 
-# Color code (&a, &b, etc.) in normal chat (non-channel chat)
-# Whether to enable. If set to false, color codes will not be converted.
+# 通常チャット（非チャンネルチャット）で、カラーコード（&aや&bなど）を
+# 使用可能にするかどうか。falseに設定すると、カラーコードは変換されません。
 enableNormalChatColorCode: true
 
-# Whether normal chat (non-channel chat) is clickable.
-# If it is clickable, you can click the player name to send a private message, 
-# but plugin will cancel the normal chat and send another clickable message, 
-# so you may not use other chat related plugins.
-# Note that channel chats are always clickable, regardless of this setting.
+# 通常チャット（非チャンネルチャット）をクリック可能にするかどうか。
+# クリック可能にすると、プレイヤー名をクリックしてプライベートメッセージを送ることができるようになりますが、
+# 通常チャットをキャンセルしてクリック可能な別のメッセージを流すので、他のチャット関連プラグインとの連携が
+# うまくいかなくなる可能性があります。
+# なお、この設定に関係なく、チャンネルチャットは常にクリック可能です。
 enableNormalChatClickable: false
 
-# Whether to log normal chat (non-channel chat) to console.
-# Even if this item is set to false, it may be recorded in the console.
+# 通常チャット（非チャンネルチャット）をコンソールにログ出力するかどうか。
+# 本項目をfalseにしても、コンソールに記録される場合があります。
 displayNormalChatOnConsole: true
 
 
-# -------------------- Japanize conversion settings --------------------
+# -------------------- Japanize変換設定 --------------------
 
-# Settings for converting Roman characters to Kana or Kanji.
-# You can set any one of none/kana/GoogleIME.
-# none: No conversion.
-# kana: Kana conversion only.
-# GoogleIME: After converting kana, convert kanji using GoogleIME.
-japanizeType: none
+# ローマ字をかな文字や漢字に変換する設定。
+# none/kana/GoogleIME の3つのいずれかが設定可能。
+# none      : 変換なし。
+# kana      : かな変換のみ。
+# GoogleIME : かな変換したのち、GoogleIMEを使って漢字変換する。
+japanizeType: GoogleIME
 
-# When converting kana or kanji,
-# Display the conversion result in a single line with the original statement content, or
-# Set whether to display only the conversion result on the second line.
+# かな変換や漢字変換時に、
+# 変換結果を元の発言内容と合わせて1行で表示するか、
+# 変換結果のみを2行目に表示するかを、設定する。
+# 1行表示の例：
+#     <ucchy> aiueo (あいうえお)
+# 2行表示の例：
+#     <ucchy> aiueo
+#     [JP] あいうえお
 japanizeDisplayLine: 1
 
-# Set the display format when japanizeDisplayLine is 1.
-# The following keywords can be used for formatting.
-# %msg: Original content
-# %japanize: Japanize Within the converted statement
+# japanizeDisplayLine が 1 のときの、表示フォーマットを設定する。
+# フォーマット設定には、下記のキーワードが使用できます。
+# %msg      : 元の発言内容
+# %japanize : Japanize変換された発言内容
 japanizeLine1Format: '%msg &6(%japanize)'
 
-# Sets the display format for the second line when japanizeDisplayLine is 2.
-# The following keywords can be used for formatting.
-# %msg: Original content
-# %japanize: Japanize Converted remark contents
+# japanizeDisplayLine が 2 のときの、2行目の表示フォーマットを設定する。
+# フォーマット設定には、下記のキーワードが使用できます。
+# %msg      : 元の発言内容
+# %japanize : Japanize変換された発言内容
 japanizeLine2Format: '&6[JP] %japanize'
 
-# Set whether to exclude the player name included in the statement from Japanize conversion.
+# 発言に含まれているプレイヤー名を、Japanize変換から除外するかどうかを設定する。
 japanizeIgnorePlayerName: true
 
-# Non-Japanese marker.
-# If this is at the beginning of your remark, do not temporarily perform Japanize conversion.
+# ノンジャパナイズマーカー。
+# これが発言の頭に入っている場合は、一時的にJapanize変換を実行しない。
 noneJapanizeMarker: '$'
 
-# Sets whether player's Japanize conversion on or off by default.
+# プレイヤーのJapanize変換を、デフォルトでオンにするかオフにするかを設定する。
 japanizePlayerDefault: true
-
-
-# -------------------- BungeeCord settings --------------------
-
-# When plugged in BungeeCord, chat events are sent to the spigot server under it,
-# It is a mode to process after receiving it back.
-# All spigot servers need to have LunaChat installed.
-bungeePassThroughMode: false

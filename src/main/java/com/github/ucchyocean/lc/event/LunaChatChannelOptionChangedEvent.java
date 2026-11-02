@@ -15,6 +15,7 @@ import java.util.HashMap;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelOptionChangedEvent extends LunaChatBaseCancellableEvent {
 
     private final CommandSender sender;

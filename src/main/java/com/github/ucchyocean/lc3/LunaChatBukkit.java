@@ -17,7 +17,6 @@ import com.github.ucchyocean.lc3.command.LunaChatJapanizeCommand;
 import com.github.ucchyocean.lc3.command.LunaChatMessageCommand;
 import com.github.ucchyocean.lc3.command.LunaChatReplyCommand;
 import com.github.ucchyocean.lc3.member.ChannelMember;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.bstats.charts.DrilldownPie;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -88,18 +86,6 @@ public class LunaChatBukkit extends JavaPlugin implements PluginInterface {
         normalChatLogger = new LunaChatLogger("==normalchat");
         if (!config.isEnableChannelChat()) manager.removeAllDefaultChannels();
 
-        // Metrics
-        if (!config.getMetricsDisabled()) {
-            Metrics metrics = new Metrics(this, 7936);
-            metrics.addCustomChart(new DrilldownPie("minecraft_server_version", () -> {
-                Map<String, Map<String, Integer>> map = new HashMap<>();
-                Map<String, Integer> sub = new HashMap<>();
-                sub.put(Bukkit.getVersion(), 1);
-                map.put(Bukkit.getName(), sub);
-                return map;
-            }));
-        }
-
         // チャンネルチャット無効なら、デフォルト発言先をクリアする(see issue #59)
         if (!config.isEnableChannelChat()) {
             manager.removeAllDefaultChannels();
@@ -147,9 +133,6 @@ public class LunaChatBukkit extends JavaPlugin implements PluginInterface {
 
         // イベント実行クラスの登録
         LunaChat.setEventSender(new BukkitEventSender());
-
-        // プラグインチャンネル登録
-        getServer().getMessenger().registerOutgoingPluginChannel(this, LunaChat.PMC_MESSAGE);
     }
 
     /**
@@ -318,14 +301,5 @@ public class LunaChatBukkit extends JavaPlugin implements PluginInterface {
     @Override
     public void runAsyncTask(Runnable task) {
         Bukkit.getScheduler().runTaskAsynchronously(this, task);
-    }
-
-    /**
-     * プラグインメッセージを送信する
-     *
-     * @param bytes 送信内容
-     */
-    public void sendPluginMessage(byte[] bytes) {
-        getServer().sendPluginMessage(this, LunaChat.PMC_MESSAGE, bytes);
     }
 }

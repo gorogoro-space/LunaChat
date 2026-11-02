@@ -22,6 +22,7 @@ public class LunaChat {
      * @return LunaChat
      * @deprecated Legacy Version
      */
+    @Deprecated
     public static LunaChat getInstance() {
         return instance;
     }
@@ -32,6 +33,7 @@ public class LunaChat {
      * @return LunaChatAPI
      * @deprecated Legacy Version
      */
+    @Deprecated
     public LunaChatAPI getLunaChatAPI() {
         return api;
     }

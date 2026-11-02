@@ -17,6 +17,7 @@ import org.bukkit.event.HandlerList;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public abstract class LunaChatBaseEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();

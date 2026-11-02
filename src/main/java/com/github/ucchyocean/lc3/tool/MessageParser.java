@@ -137,11 +137,11 @@ public class MessageParser {
                 result.add("     * " + value);
                 result.add("     */");
                 result.add(String.format(
-                        "    public static BaseComponent[] %s(%s) {", key, arguments));
+                        "    public static Component %s(%s) {", key, arguments));
                 result.add(String.format(
                         "        String msg = resources.getString(\"%s\");", key));
                 result.add(String.format(
-                        "        if ( msg == null ) return new BaseComponent[0];", key));
+                        "        if ( msg == null ) return Component.empty();", key));
                 result.add("        ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());");
 
                 for (String keyword : keywords) {

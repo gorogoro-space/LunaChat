@@ -16,11 +16,6 @@ import java.io.File;
  */
 public class LunaChat {
 
-    /**
-     * Bukkit→BungeeCord チャット発言内容の転送に使用するプラグインメッセージチャンネル名
-     */
-    public static final String PMC_MESSAGE = "lunachat:message";
-
     private static PluginInterface instance;
     private static LunaChatMode mode;
     private static EventSenderInterface esender;
@@ -28,7 +23,7 @@ public class LunaChat {
     /**
      * LunaChatのプラグインクラスを取得する
      *
-     * @return プラグインクラス、BukkitモードならLunaChatBukkit、BungeeCordモードならLunaChatBungee
+     * @return プラグインクラス、BukkitモードならLunaChatBukkit
      */
     public static PluginInterface getPlugin() {
         return instance;
@@ -42,7 +37,7 @@ public class LunaChat {
     /**
      * LunaChatの実行モードを取得する
      *
-     * @return 実行モード（BUKKIT or BUNGEE）
+     * @return 実行モード（BUKKIT or STANDALONE）
      */
     public static LunaChatMode getMode() {
         return mode;

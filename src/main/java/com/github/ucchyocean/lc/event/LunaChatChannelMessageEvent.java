@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelMessageEvent extends LunaChatBaseEvent {
 
     private final ChannelPlayer player;

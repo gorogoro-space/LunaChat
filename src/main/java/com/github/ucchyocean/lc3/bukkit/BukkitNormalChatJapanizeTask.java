@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class BukkitNormalChatJapanizeTask extends BukkitRunnable {
 
     private final ChannelMember player;
+    @SuppressWarnings("deprecation") // BukkitEventListener と同じく AsyncPlayerChatEvent を使う(理由は BukkitEventListener のコメントを参照)
     private final AsyncPlayerChatEvent event;
 
     private final JapanizeConvertTask task;
@@ -37,6 +38,7 @@ public class BukkitNormalChatJapanizeTask extends BukkitRunnable {
      * @param japanizeFormat 変換後に発言するときの、発言フォーマット
      * @param event          イベント
      */
+    @SuppressWarnings("deprecation") // 同上
     public BukkitNormalChatJapanizeTask(String org, JapanizeType type,
                                         ChannelMember player, String japanizeFormat, final AsyncPlayerChatEvent event) {
 

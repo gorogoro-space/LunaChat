@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  *
  * @author ucchy
  */
-public class LunaChatConfig {
+public final class LunaChatConfig {
 
     /**
      * メッセージの言語
@@ -37,11 +37,6 @@ public class LunaChatConfig {
      * チャットイベントの処理優先度
      */
     private EventPriority playerChatEventListenerPriority;
-
-    /**
-     * プラグインの匿名利用統計（bStats）送信を無効化するかどうか。
-     */
-    private boolean metricsDisabled;
 
     /**
      * チャンネルチャットに入っていない人の発言を、グローバルとして扱うかどうか
@@ -236,13 +231,6 @@ public class LunaChatConfig {
      */
     private int japanizeWait;
 
-    // === 以下、BungeeCord用設定 ===
-
-    /**
-     * Bungeeパススルーモード
-     */
-    private boolean bungeePassThroughMode;
-
     /**
      * コンストラクタ
      *
@@ -261,6 +249,7 @@ public class LunaChatConfig {
      */
     private static EventPriority getEventPriority(String value) {
 
+        // 設定が無い・読めないときは HIGHEST(ほかのプラグインの処理のあとで処理する)
         if (value == null) return EventPriority.HIGHEST;
 
         if (value.equalsIgnoreCase("LOWEST")) {
@@ -283,15 +272,15 @@ public class LunaChatConfig {
      */
     public void reloadConfig(File dataFolder, File jarFile) {
 
+        // 設定は常に config.yml(日本語版)を使う。
+        // 英語版の config_en.yml は、説明を読むために展開するだけで、読み込まない。
         File configFile = new File(dataFolder, "config.yml");
         if (!configFile.exists()) {
-            Utility.copyFileFromJar(jarFile, configFile, "config_ja.yml", false);
-            String language = Utility.getDefaultLocale().getLanguage();
-            if (language.equals("ja")) {
-                Utility.copyFileFromJar(jarFile, configFile, "config_ja.yml", false);
-            } else {
-                Utility.copyFileFromJar(jarFile, configFile, "config.yml", false);
-            }
+            Utility.copyFileFromJar(jarFile, configFile, "config.yml", false);
+        }
+        File configEnFile = new File(dataFolder, "config_en.yml");
+        if (!configEnFile.exists()) {
+            Utility.copyFileFromJar(jarFile, configEnFile, "config_en.yml", false);
         }
 
         YamlConfig config = YamlConfig.load(configFile);
@@ -300,7 +289,6 @@ public class LunaChatConfig {
         enableChannelChat = config.getBoolean("enableChannelChat", true);
         playerChatEventListenerPriority
                 = getEventPriority(config.getString("playerChatEventListenerPriority"));
-        metricsDisabled = config.getBoolean("metricsDisabled", false);
         noJoinAsGlobal = config.getBoolean("noJoinAsGlobal", true);
         loggingChat = config.getBoolean("loggingChat", true);
         displayChatOnConsole = config.getBoolean("displayChatOnConsole", true);
@@ -383,8 +371,6 @@ public class LunaChatConfig {
         japanizePlayerDefault = config.getBoolean("japanizePlayerDefault", true);
         japanizeWait = config.getInt("japanizeWait", 1);
 
-        bungeePassThroughMode = config.getBoolean("bungeePassThroughMode", false);
-
         // globalチャンネルが、使用可能なチャンネル名かどうかを調べる
         if (globalChannel != null && !globalChannel.isEmpty() &&
                 !globalChannel.matches("[0-9a-zA-Z\\-_]{1,20}")) {
@@ -420,15 +406,6 @@ public class LunaChatConfig {
      */
     public EventPriority getPlayerChatEventListenerPriority() {
         return playerChatEventListenerPriority;
-    }
-
-    /**
-     * プラグインの匿名利用統計（bStats）送信を無効化するかどうか。
-     *
-     * @return metricsDisabledを返す
-     */
-    public boolean getMetricsDisabled() {
-        return metricsDisabled;
     }
 
     /**
@@ -766,14 +743,5 @@ public class LunaChatConfig {
      */
     public boolean isDisplayNormalChatOnConsole() {
         return displayNormalChatOnConsole;
-    }
-
-    /**
-     * Bungeeパススルーモードかどうかを返す
-     *
-     * @return bungeePassThroughMode
-     */
-    public boolean isBungeePassThroughMode() {
-        return bungeePassThroughMode;
     }
 }

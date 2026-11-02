@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public class LunaChatChannelCreateEvent extends LunaChatBaseCancellableEvent {
 
     private final CommandSender sender;
@@ -46,6 +47,7 @@ public class LunaChatChannelCreateEvent extends LunaChatBaseCancellableEvent {
      * @deprecated チャンネル作成イベントは、チャンネルを作成する前に呼び出されるので、
      * このメソッドの戻り値は必ずnullになります。
      */
+    @Deprecated
     @Override
     public Channel getChannel() {
         return super.getChannel();

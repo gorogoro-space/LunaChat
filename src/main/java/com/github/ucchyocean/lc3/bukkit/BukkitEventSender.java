@@ -271,7 +271,6 @@ public class BukkitEventSender implements EventSenderInterface {
      */
     private ChannelPlayer convertChannelMemberToChannelPlayer(ChannelMember cm) {
         if (cm == null) return null;
-        if (cm instanceof ChannelMemberBungee)  return null; // Bungeeモードの場合は変換できない
         if (cm instanceof ChannelMemberPlayer) {
             return ChannelPlayer.getChannelPlayer(cm.toString());
         } else if (cm instanceof ChannelMemberBukkitConsole) {
@@ -312,7 +311,6 @@ public class BukkitEventSender implements EventSenderInterface {
      */
     private CommandSender convertChannelMemberToCommandSender(ChannelMember cm) {
         if (cm == null) return null;
-        if (cm instanceof ChannelMemberBungee) return null; // Bungeeモードの場合は変換できない
         if (cm instanceof ChannelMemberPlayer) {
             return ((ChannelMemberPlayer) cm).getPlayer();
         } else if (cm instanceof ChannelMemberBukkitConsole) {

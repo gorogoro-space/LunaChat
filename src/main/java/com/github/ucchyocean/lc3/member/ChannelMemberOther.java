@@ -1,7 +1,7 @@
 package com.github.ucchyocean.lc3.member;
 
 import com.github.ucchyocean.lc3.util.BlockLocation;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,7 +82,7 @@ public class ChannelMemberOther extends ChannelMember {
     }
 
     @Override
-    public void sendMessage(BaseComponent[] message) {
+    public void sendMessage(Component message) {
         // do nothing.
     }
 

@@ -12,6 +12,5 @@ package com.github.ucchyocean.lc3;
  */
 public enum LunaChatMode {
     BUKKIT,
-    BUNGEE,
     STANDALONE,
 }

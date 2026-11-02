@@ -12,7 +12,7 @@ import com.github.ucchyocean.lc3.member.ChannelMember;
 import com.github.ucchyocean.lc3.member.ChannelMemberBukkit;
 import com.github.ucchyocean.lc3.util.ClickableFormat;
 import com.github.ucchyocean.lc3.util.UtilityBukkit;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -111,7 +111,7 @@ public class BukkitChannel extends Channel {
             recipients = recipientsNew;
 
             // 受信者が自分以外いない場合は、メッセージを表示する
-            if (Messages.noRecipientMessage("", "").length > 0 && (
+            if (!Component.empty().equals(Messages.noRecipientMessage("", "")) && (
                     recipients.isEmpty() ||
                             (recipients.size() == 1 &&
                                     recipients.get(0).getName().equals(player.getName())))) {
@@ -165,7 +165,7 @@ public class BukkitChannel extends Channel {
         // 送信する
         if (format != null) {
             format.replace("%msg", message);
-            BaseComponent[] comps = format.makeTextComponent();
+            Component comps = format.makeTextComponent();
             for (ChannelMember p : recipients) {
                 p.sendMessage(comps);
             }

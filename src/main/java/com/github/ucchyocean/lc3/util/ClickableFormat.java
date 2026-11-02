@@ -10,12 +10,15 @@ import com.github.ucchyocean.lc3.LunaChatAPI;
 import com.github.ucchyocean.lc3.Messages;
 import com.github.ucchyocean.lc3.channel.Channel;
 import com.github.ucchyocean.lc3.member.ChannelMember;
-import net.md_5.bungee.api.chat.*;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -181,11 +184,11 @@ public class ClickableFormat {
         return makeFormat(format, member, null, false).toLegacyText();
     }
 
-    public BaseComponent[] makeTextComponent() {
+    public Component makeTextComponent() {
 
         message.translateColorCode();
 
-        List<BaseComponent> components = new ArrayList<>();
+        List<Component> components = new ArrayList<>();
         Matcher matcher = Pattern.compile(PLACEHOLDER_PATTERN).matcher(message.getStringBuilder());
         int lastIndex = 0;
 
@@ -193,7 +196,7 @@ public class ClickableFormat {
 
             // マッチする箇所までの文字列を取得する
             if (lastIndex < matcher.start()) {
-                Collections.addAll(components, TextComponent.fromLegacyText(message.substring(lastIndex, matcher.start())));
+                components.add(UtilityBukkit.fromLegacyTextWithUrls(message.substring(lastIndex, matcher.start())));
             }
 
             // マッチした箇所の文字列を解析して追加する
@@ -201,39 +204,51 @@ public class ClickableFormat {
             String text = matcher.group(2);
             String hover = matcher.group(3);
             String command = matcher.group(4);
-            TextComponent tc = new TextComponent(TextComponent.fromLegacyText(text));
+            TextComponent.Builder tc = Component.text().append(UtilityBukkit.fromLegacyTextWithUrls(text));
             if (!hover.isEmpty()) {
-                @SuppressWarnings("deprecation")
-                HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create());
-                // bungeecord-chat v1.16-R0.3 style.
-//              HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hover));
-                tc.setHoverEvent(event);
+                tc.hoverEvent(HoverEvent.showText(Component.text(hover)));
             }
             if (type.equals("RUN_COMMAND")) {
-                tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+                tc.clickEvent(ClickEvent.runCommand(command));
             } else { // type.equals("SUGGEST_COMMAND")
-                tc.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+                tc.clickEvent(ClickEvent.suggestCommand(command));
             }
 
             // componentsの最後の要素のカラーコードを、TextComponentにも反映させる。 see issue #202
             if (!components.isEmpty()) {
-                BaseComponent last = components.get(components.size() - 1);
-                tc.setColor(last.getColor());
+                tc.color(getLastColor(components.get(components.size() - 1)));
             }
 
-            components.add(tc);
+            components.add(tc.build());
 
             lastIndex = matcher.end();
         }
 
         if (lastIndex < message.length() - 1) {
             // 残りの部分の文字列を取得する
-            Collections.addAll(components, TextComponent.fromLegacyText(message.substring(lastIndex)));
+            components.add(UtilityBukkit.fromLegacyTextWithUrls(message.substring(lastIndex)));
         }
 
-        BaseComponent[] result = new BaseComponent[components.size()];
-        components.toArray(result);
-        return result;
+        return Component.text().append(components).build();
+    }
+
+    /**
+     * コンポーネントの末尾の文字に付いている色を返す。
+     * 色コードを含む文字列から作った Component は、色ごとの部品を子に持つため、
+     * 最後の子をたどり、末尾の文字に効いている色(子に色が無ければ親の色)を取得する。
+     *
+     * @param component コンポーネント
+     * @return 末尾の色。色が付いていなければ null
+     */
+    private static @Nullable TextColor getLastColor(Component component) {
+        TextColor color = component.color();
+        while (!component.children().isEmpty()) {
+            component = component.children().get(component.children().size() - 1);
+            if (component.color() != null) {
+                color = component.color();
+            }
+        }
+        return color;
     }
 
     public String toLegacyText() {

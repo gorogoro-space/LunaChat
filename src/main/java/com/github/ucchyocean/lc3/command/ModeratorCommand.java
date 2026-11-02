@@ -129,10 +129,18 @@ public class ModeratorCommand extends LunaChatSubCommand {
             if (mod.startsWith("-")) {
                 String name = mod.substring(1);
                 ChannelMember cp = ChannelMember.getChannelMember(name);
+                if (cp == null) {
+                    sender.sendMessage(Messages.errmsgNotfoundPlayer(name));
+                    continue;
+                }
                 channel.removeModerator(cp);
                 sender.sendMessage(Messages.cmdmsgModeratorMinus(name, cname));
             } else {
                 ChannelMember cp = ChannelMember.getChannelMember(mod);
+                if (cp == null) {
+                    sender.sendMessage(Messages.errmsgNotfoundPlayer(mod));
+                    continue;
+                }
                 channel.addModerator(cp);
                 sender.sendMessage(Messages.cmdmsgModerator(mod, cname));
             }

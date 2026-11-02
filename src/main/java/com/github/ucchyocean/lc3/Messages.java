@@ -9,7 +9,7 @@ import com.github.ucchyocean.lc3.util.ClickableFormat;
 import com.github.ucchyocean.lc3.util.KeywordReplacer;
 import com.github.ucchyocean.lc3.util.Utility;
 import com.github.ucchyocean.lc3.util.YamlConfig;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,9 +95,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんがチャンネルに参加しました。
      */
-    public static BaseComponent[] joinMessage(Object color, Object channel, Object player) {
+    public static Component joinMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("joinMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -108,9 +108,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんがチャンネルから退出しました。
      */
-    public static BaseComponent[] quitMessage(Object color, Object channel, Object player) {
+    public static Component quitMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("quitMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -133,9 +133,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんをチャンネルからBANしました。
      */
-    public static BaseComponent[] banMessage(Object color, Object channel, Object player) {
+    public static Component banMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("banMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -146,9 +146,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんをチャンネルからキックしました。
      */
-    public static BaseComponent[] kickMessage(Object color, Object channel, Object player) {
+    public static Component kickMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("kickMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -159,9 +159,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんをチャンネルからMuteしました。
      */
-    public static BaseComponent[] muteMessage(Object color, Object channel, Object player) {
+    public static Component muteMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("muteMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -172,9 +172,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7NGワード発言により、%player% さんをチャンネルから自動BANしました。
      */
-    public static BaseComponent[] banNGWordMessage(Object color, Object channel, Object player) {
+    public static Component banNGWordMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("banNGWordMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -185,9 +185,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7NGワード発言により、%player% さんをチャンネルから自動キックしました。
      */
-    public static BaseComponent[] kickNGWordMessage(Object color, Object channel, Object player) {
+    public static Component kickNGWordMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("kickNGWordMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -198,9 +198,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7NGワード発言により、%player% さんをチャンネルから自動Muteしました。
      */
-    public static BaseComponent[] muteNGWordMessage(Object color, Object channel, Object player) {
+    public static Component muteNGWordMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("muteNGWordMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -211,9 +211,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんを期限 %minutes% 分でチャンネルからBANしました。
      */
-    public static BaseComponent[] banWithExpireMessage(Object color, Object channel, Object player, Object minutes) {
+    public static Component banWithExpireMessage(Object color, Object channel, Object player, Object minutes) {
         String msg = resources.getString("banWithExpireMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -225,9 +225,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんを期限 %minutes% 分でチャンネルからMuteしました。
      */
-    public static BaseComponent[] muteWithExpireMessage(Object color, Object channel, Object player, Object minutes) {
+    public static Component muteWithExpireMessage(Object color, Object channel, Object player, Object minutes) {
         String msg = resources.getString("muteWithExpireMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -239,9 +239,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんのBANが解除されました。
      */
-    public static BaseComponent[] pardonMessage(Object color, Object channel, Object player) {
+    public static Component pardonMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("pardonMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -252,9 +252,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんのMuteが解除されました。
      */
-    public static BaseComponent[] unmuteMessage(Object color, Object channel, Object player) {
+    public static Component unmuteMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("unmuteMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -265,9 +265,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんの期限付きBANが解除されました。
      */
-    public static BaseComponent[] expiredBanMessage(Object color, Object channel, Object player) {
+    public static Component expiredBanMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("expiredBanMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -278,9 +278,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんの期限付きMuteが解除されました。
      */
-    public static BaseComponent[] expiredMuteMessage(Object color, Object channel, Object player) {
+    public static Component expiredMuteMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("expiredMuteMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -291,9 +291,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんがチャンネルのモデレーターになりました。
      */
-    public static BaseComponent[] addModeratorMessage(Object color, Object channel, Object player) {
+    public static Component addModeratorMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("addModeratorMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -304,9 +304,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7%player% さんがチャンネルのモデレーターから外れました。
      */
-    public static BaseComponent[] removeModeratorMessage(Object color, Object channel, Object player) {
+    public static Component removeModeratorMessage(Object color, Object channel, Object player) {
         String msg = resources.getString("removeModeratorMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -317,9 +317,9 @@ public class Messages {
     /**
      * &f[%color%%channel%&f]&7あなたの発言は、誰にも届きませんでした。
      */
-    public static BaseComponent[] noRecipientMessage(Object color, Object channel) {
+    public static Component noRecipientMessage(Object color, Object channel) {
         String msg = resources.getString("noRecipientMessage");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%color%", color.toString());
         cf.replace("%channel%", channel.toString());
@@ -361,9 +361,9 @@ public class Messages {
     /**
      * &7| &f%channel%&7(&c%online%&7/&c%total%&7) &a%topic%
      */
-    public static BaseComponent[] listFormat(Object channel, Object online, Object total, Object topic) {
+    public static Component listFormat(Object channel, Object online, Object total, Object topic) {
         String msg = resources.getString("listFormat");
-        if (msg == null) return new BaseComponent[0];
+        if (msg == null) return Component.empty();
         ClickableFormat cf = ClickableFormat.makeChannelClickableMessage(msg, channel.toString());
         cf.replace("%channel%", channel.toString());
         cf.replace("%online%", online.toString());

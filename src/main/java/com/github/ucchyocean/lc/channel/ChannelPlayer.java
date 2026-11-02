@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
  * @author ucchy
  * @deprecated Legacy Version
  */
+@Deprecated
 public abstract class ChannelPlayer implements Comparable<ChannelPlayer> {
 
     /**

@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -72,7 +73,7 @@ public class IMEConverter {
                 baseurl = SOCIAL_IME_URL + URLEncoder.encode(org, StandardCharsets.UTF_8);
                 encode = "EUC_JP";
             }
-            URL url = new URL(baseurl);
+            URL url = URI.create(baseurl).toURL();
 
             urlconn = (HttpURLConnection) url.openConnection();
             urlconn.setRequestMethod("GET");
