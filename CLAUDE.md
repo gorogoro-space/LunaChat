@@ -39,12 +39,20 @@
 - 連携するプラグイン(どれも softdepend・`compileOnly`): Vault、dynmap、Multiverse-Core、mcMMO。jar に同梱するライブラリはない(gson などは Paper に入っているものを使う)
 - commons-lang などの外部ユーティリティは使わず、Java 標準で書く
 - メッセージは Adventure(`Component`)で送る。`ChannelMember.sendMessage(Component)`。色コード(`§`)の文字列との変換は `util/UtilityBukkit` の `fromLegacyText`・`fromLegacyTextWithUrls`(URL をクリックで開けるようにする)・`toLegacyText` を使う。BungeeCord の chat API(`TextComponent` など)・`sender.spigot()` は使わない
-- 非推奨の API は使わない(`-Xlint:all` で警告 0 件にしてある)。例外は次の 2 つで、どちらも `@SuppressWarnings` に理由を書いてある
-  - チャットの受け取りの `AsyncPlayerChatEvent`(理由は下の「チャットの受け取り」)
-  - 古い API(`com.github.ucchyocean.lc`)との互換のための非推奨
+- 非推奨の API は使わない(`-Xlint:all` で警告 0 件にしてある)。警告を `@SuppressWarnings` で抑えているのは次の場所だけで、増やすときは理由をコメントに書く
+  - チャットの受け取りの `AsyncPlayerChatEvent`(`bukkit/BukkitEventListener`・`BukkitNormalChatJapanizeTask`。理由は下の「チャットの受け取り」)
+  - 古い API(`com.github.ucchyocean.lc`)との互換のための `deprecation`(`lc/LunaChat`・`lc/LunaChatAPIImpl`・`bukkit/BukkitEventSender`。古いイベントを発火するため)
+  - YAML の読み込みの `unchecked`(`channel/Channel`・`util/YamlConfig`・`util/YamlSection`)と、`util/ChatColor` の `unused`(元のコードのまま)
 - パッケージ名は**すべて小文字**のままにする。大文字が混ざると plugin.yml の main と一致せず起動しない
 - 動作確認はサーバーを再起動して行う。PlugManX での読み込みは権限やコマンドの登録が不完全になることがある。jar を差し替えるときは先に古い jar を消す(同じ名前のプラグインが 2 つあると、どちらが読まれるかわからない)
 - サーバーと開発 PC の環境情報は `CLAUDE.local.md`(Git に入れない)を参照する
+
+## リリース
+
+- 既定のブランチは `main`。GitHub Actions などの自動ビルドは無い(手元でビルドした jar を添付する)
+- 手順: 「バージョンを X.Y.Z にする」コミットで `gradle.properties` の `version` を上げる → push → クリーンビルド → タグ `vX.Y.Z` で GitHub のリリースを作り、`LunaChat-X.Y.Z.jar` を添付する
+- リリースの本文は日本語で、動作環境・主な変更点・更新するときの注意(古い jar を消すなど)・ライセンスを書く。公開前に本文をユーザーに確認してもらう
+- 最初のリリースは v4.0.0(f1w3/LunaChat v3.0.20 からのフォーク)
 
 ## 最重要の設計方針
 
