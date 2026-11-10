@@ -164,7 +164,7 @@ public class BukkitChannel extends Channel {
 
         // 送信する
         if (format != null) {
-            format.replace("%msg", message);
+            format.replace("%msg", ClickableFormat.sanitizeUserInput(message));
             Component comps = format.makeTextComponent();
             for (ChannelMember p : recipients) {
                 p.sendMessage(comps);

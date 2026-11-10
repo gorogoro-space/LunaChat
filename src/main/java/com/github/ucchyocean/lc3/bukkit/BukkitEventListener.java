@@ -381,7 +381,7 @@ public class BukkitEventListener implements Listener {
                 format = ClickableFormat.makeFormat(f, ChannelMember.getChannelMember(event.getPlayer()));
 
                 // 発言内容の送信
-                format.replace("%msg", message);
+                format.replace("%msg", ClickableFormat.sanitizeUserInput(message));
                 Component comps = format.makeTextComponent();
                 for (Player recipient : event.getRecipients()) {
                     ChannelMember cm = ChannelMember.getChannelMember(recipient);

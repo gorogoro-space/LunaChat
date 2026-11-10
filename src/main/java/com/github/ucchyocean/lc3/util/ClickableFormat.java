@@ -48,6 +48,20 @@ public class ClickableFormat {
     }
 
     /**
+     * プレイヤーが入力した値(発言の本文・表示名など)を書式に差し込む前に、
+     * 全角の「＜」「＞」を半角にする。
+     * クリックできる部分のプレースホルダー(PLACEHOLDER_PATTERN)と同じ形を本文に書かれると、
+     * クリックでコマンドを実行する部分として解釈されてしまうため。
+     *
+     * @param value 差し込む値
+     * @return 全角の「＜」「＞」を半角にした値。null なら null
+     */
+    public static @Nullable String sanitizeUserInput(@Nullable String value) {
+        if (value == null) return null;
+        return value.replace('＜', '<').replace('＞', '>');
+    }
+
+    /**
      * チャットフォーマット内のキーワードを置き換えする
      *
      * @param format チャットフォーマット
@@ -122,7 +136,7 @@ public class ClickableFormat {
             if (withPlayerLink) {
                 String playerPMPlaceHolder = String.format(
                         PLACEHOLDER_SUGGEST_COMMAND,
-                        member.getDisplayName(),
+                        sanitizeUserInput(member.getDisplayName()),
                         Messages.hoverPlayerName(member.getName()),
                         String.format(TELL_COMMAND_TEMPLATE, member.getName()));
                 msg.replace("%displayname", playerPMPlaceHolder);
@@ -133,14 +147,14 @@ public class ClickableFormat {
                         Messages.hoverPlayerName(member.getName()),
                         String.format(TELL_COMMAND_TEMPLATE, member.getName())));
             } else {
-                msg.replace("%displayname", member.getDisplayName());
-                msg.replace("%username", member.getDisplayName());
+                msg.replace("%displayname", sanitizeUserInput(member.getDisplayName()));
+                msg.replace("%username", sanitizeUserInput(member.getDisplayName()));
                 msg.replace("%player", member.getName());
             }
 
             if (msg.contains("%prefix") || msg.contains("%suffix")) {
-                msg.replace("%prefix", member.getPrefix());
-                msg.replace("%suffix", member.getSuffix());
+                msg.replace("%prefix", sanitizeUserInput(member.getPrefix()));
+                msg.replace("%suffix", sanitizeUserInput(member.getSuffix()));
             }
 
             msg.replace("%world", member.getWorldName());
